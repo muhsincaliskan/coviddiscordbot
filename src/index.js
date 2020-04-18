@@ -37,9 +37,6 @@ bot.on('message',message=>{
                 command = message.content.substring(8)
                 getState(message, command)
             }
-            else if (message.content=="cov leaderboard") {
-                getsorted(message,"cases")
-            }
             else {
                 message.channel.send( "Too much arguments!\nYou can try ISO code.");
             }
