@@ -7,12 +7,18 @@
     "start": "node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["discord","covid","corona","virus",""],
+  "keywords": [
+    "discord",
+    "covid",
+    "corona",
+    "virus",
+    ""
+  ],
   "author": "Ahmet Muhsin Çalışkan aka Killerbean",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "novelcovid": "^1.2.4"
+    "novelcovid": "^1.2.6"
   }
 }

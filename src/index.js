@@ -3,8 +3,8 @@ const { NovelCovid } = require('novelcovid');
 const covid = new NovelCovid();
 const auth = require('../auth.json');
 const track = new NovelCovid();
-const Discord= require("discord.js")
-const bot=new Discord.Client()
+const Discord = require("discord.js")
+const bot = new Discord.Client()
 
 var fs = require("fs");
 let raw = fs.readFileSync("./filter.json")
@@ -14,7 +14,7 @@ bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`);
     bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
 });
-bot.on('message',message=>{
+bot.on('message', message => {
     message.content = message.content.toLowerCase();
     if (message.content.startsWith("cov")) {
         if (message.content.indexOf(" ") != -1) {
@@ -38,39 +38,35 @@ bot.on('message',message=>{
                 getState(message, command)
             }
             else {
-                message.channel.send( "Too much arguments!\nYou can try ISO code.");
+                message.channel.send("Too much arguments!\nYou can try ISO code.");
             }
         }
         else if (message.content.endsWith("cov")) {
             getall(message);
         }
     }
-
-
-
-
 })
 async function getall(message) {
     let all = await covid.all();
-    let allYesterday = await covid.yesterday();
-    message.channel.send( "Global Stats:\n\n" + messageTemplate(all, allYesterday))
-  
+    let allYesterday = await covid.all({ yesterday: true });
+    message.channel.send("Global Stats:\n\n" + messageTemplate(all, allYesterday))
+
     return 1;
 }
 async function getcountry(message, command) {
     let specificCountry = await covid.countries(command);
-    let yesterdayCountry = await covid.yesterday(command)
+    let yesterdayCountry = await covid.countries(command, { yesterday: true })
     if (specificCountry.message === undefined) {
         specificCountryMessage =
             "Country: *" + specificCountry.country + "*\n\n" + messageTemplate(specificCountry, yesterdayCountry)
         message.channel.send(specificCountryMessage);
     }
     else
-        message.channel.send( specificCountry.message + "\nYou can try ISO code.");
+        message.channel.send(specificCountry.message + "\nYou can try ISO code.");
     return 1;
 }
 async function getsorted(message, sorttype) {
-    let sorteddata = await covid.countries(null, `${sorttype}`);
+    let sorteddata = await covid.countries(null, { sort: `${sorttype}` });
     var top10 = [];
     for (let index = 0; index < 10; index++) {
         if (sorttype === "cases")
