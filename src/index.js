@@ -1,14 +1,16 @@
 require("dotenv").config()
 const { NovelCovid } = require('novelcovid');
 const covid = new NovelCovid();
-const auth = require('../auth.json');
-const track = new NovelCovid();
 const Discord = require("discord.js")
 const bot = new Discord.Client()
 
 var fs = require("fs");
 let raw = fs.readFileSync("./filter.json")
 let filter = JSON.parse(raw);
+
+let rawReact=fs.readFileSync("./reactions.json")
+let swearReaction=JSON.parse(rawReact)
+var swearCounter=0
 
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`);
@@ -27,8 +29,12 @@ bot.on('message', message => {
             var Swear = getFilterInfo.Swear;
 
             if (isSwear) {
+                swearCounter++;
                 console.log(Swear + " deleted")
                 message.delete()
+                if (swearCounter>6) {
+                    message.reply(Math.floor((Math.random() * swearReaction.length) + 0))
+                }
             }
             else if (message.content === (`cov ${command}`) && arr.length < 3) {
                 getcountry(message, command);
