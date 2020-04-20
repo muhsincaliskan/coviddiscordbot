@@ -33,7 +33,7 @@ bot.on('message', message => {
                 console.log(Swear + " deleted")
                 message.delete()
                 if (swearCounter>6) {
-                    message.reply(Math.floor((Math.random() * swearReaction.length) + 0))
+                    message.reply(swearReaction[ Math.floor((Math.random() * swearReaction.length) + 0)])
                 }
             }
             else if (message.content === (`cov ${command}`) && arr.length < 3) {
