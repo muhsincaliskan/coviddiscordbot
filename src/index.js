@@ -96,7 +96,7 @@ function search(data, word) {
     let Swear = ""
     for (let index = 0; index < data.length; index++) {
         for (let index2 = 0; index2 < word.length; index2++) {
-            if (word[index].indexOf(data[index])>-1) {
+            if (data[index] === word[index2]||data[index].indexOf(word[index])>-1) {
                 Swear = word[index2]
                 return { isSwear: true, Swear: Swear };
             }
