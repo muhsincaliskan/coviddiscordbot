@@ -41,8 +41,12 @@ bot.on('message', message => {
                     }    
                 }
             }
-            else if (message.content === (`cov ${command}`) && arr.length < 3) {
-                getcountry(message, command);
+            else if (message.content == ("cov "+command) && arr.length < 3) {
+                if (command=="top") {
+                    getsorted(message, "cases")
+                } else {
+                    getcountry(message, command);
+                }
             }
             else if (message.content.startsWith("cov usa ") && (arr.length > 2 && arr.length < 5)) {
                 command = message.content.substring(8)
@@ -69,7 +73,7 @@ async function getcountry(message, command) {
     let yesterdayCountry = await covid.countries(command, { yesterday: true })
     if (specificCountry.message === undefined) {
         specificCountryMessage =
-            "Country: *" + specificCountry.country + "*\n\n" + messageTemplate(specificCountry, yesterdayCountry)
+            "Country: **" + specificCountry.country + "**\n\n" + messageTemplate(specificCountry, yesterdayCountry)
         message.channel.send(specificCountryMessage);
     }
     else
@@ -77,15 +81,15 @@ async function getcountry(message, command) {
     return 1;
 }
 async function getsorted(message, sorttype) {
-    let sorteddata = await covid.countries(null, { sort: `${sorttype}` });
+    let sorteddata = await covid.countries(null, { sort: sorttype });
     var top10 = [];
     for (let index = 0; index < 10; index++) {
-        if (sorttype === "cases")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": ```" + sorteddata[index].cases + "```\n";
-        else if (sorttype === "deaths")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": ```" + sorteddata[index].deaths + "```\n";
-        else if (sorttype === "recovered")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": ```" + sorteddata[index].recovered + "```\n";
+        if (sorttype == "cases")
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].cases + "**\n";
+        else if (sorttype == "deaths")
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].deaths + "**\n";
+        else if (sorttype == "recovered")
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].recovered + "**\n";
     }
     message.channel.send("Sorted by *" + sorttype + "*\n" + top10.toString().replace(/,/g, ""))
 }
@@ -119,15 +123,15 @@ function messageTemplate(data, yesterdayData = "") {
     var msg
     if (yesterdayData == "") {
         msg =
-            "State: *" + data.state + "*\n\n" +
-            "Cases: *" + data.cases + "*\n\n" +
-            "Deaths: *" + data.deaths + "*"
+            "State: **" + data.state + "**\n\n" +
+            "Cases: **" + data.cases + "**\n\n" +
+            "Deaths: *" + data.deaths + "**"
     }
     else {
         msg =
-            "Cases: *" + yesterdayData.cases + " ➡️ " + data.cases + " 🔺" + (data.cases - yesterdayData.cases) + "*\n\n" +
-            "Deaths: *" + yesterdayData.deaths + " ➡️ " + data.deaths + " 🔺" + (data.deaths - yesterdayData.deaths) + "*\n\n" +
-            "Recovered: *" + yesterdayData.recovered + " ➡️ " + data.recovered + " 🔺" + (data.recovered - yesterdayData.recovered) + "*"
+            "Cases: **" + yesterdayData.cases + " ➡️ " + data.cases + " 🔺" + (data.cases - yesterdayData.cases) + "**\n\n" +
+            "Deaths: **" + yesterdayData.deaths + " ➡️ " + data.deaths + " 🔺" + (data.deaths - yesterdayData.deaths) + "**\n\n" +
+            "Recovered: **" + yesterdayData.recovered + " ➡️ " + data.recovered + " 🔺" + (data.recovered - yesterdayData.recovered) + "**"
     }
     return msg
 }
