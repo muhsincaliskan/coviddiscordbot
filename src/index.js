@@ -32,14 +32,15 @@ bot.on('message', message => {
                 swearCounter++;
                 console.log(Swear + " deleted")
                 message.delete()
-                if (swearCounter>6) {
+                if (swearCounter>6&&swearCounter<15) {
                     var indexofReaction= Math.floor((Math.random() * swearReaction.length) + 0)
                     message.reply("\n"+swearReaction[indexofReaction])
-                    if (swearCounter==15) {
-                        message.send("Sizle uğraşamayacam\n Bulaşmam gereken insanlar var.")
-                        swearCounter=0
-                    }    
+                    
                 }
+                else if (swearCounter==15) {
+                    message.send("Sizle uğraşamayacam\n Bulaşmam gereken insanlar var.")
+                    swearCounter=0
+                }    
             }
             else if (message.content == ("cov "+command) && arr.length < 3) {
                 if (command=="top") {
