@@ -38,7 +38,7 @@ bot.on('message', message => {
                     
                 }
                 else if (swearCounter==15) {
-                    message.send("Sizle uğraşamayacam\n Bulaşmam gereken insanlar var.")
+                    message.channel.send("Sizle uğraşamayacam\n Bulaşmam gereken insanlar var.")
                     swearCounter=0
                 }    
             }
