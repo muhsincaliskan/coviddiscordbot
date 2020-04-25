@@ -126,17 +126,11 @@ function search(data, word) {
 }
 function messageTemplate(data, yesterdayData = "") {
     var msg
-    if (yesterdayData == "") {
-        msg =
-            "State: **" + data.state + "**\n\n" +
-            "Cases: **" + data.cases + "**\n\n" +
-            "Deaths: *" + data.deaths + "**"
-    }
-    else {
-        msg =
-            "Cases: **" + yesterdayData.cases + " ➡️ " + data.cases + " 🔺" + (data.cases - yesterdayData.cases) + "**\n\n" +
-            "Deaths: **" + yesterdayData.deaths + " ➡️ " + data.deaths + " 🔺" + (data.deaths - yesterdayData.deaths) + "**\n\n" +
-            "Recovered: **" + yesterdayData.recovered + " ➡️ " + data.recovered + " 🔺" + (data.recovered - yesterdayData.recovered) + "**"
+    msg =
+    "Cases: **" + yesterdayData.cases + " ➡️ " + data.cases + " 🔺" + (data.cases - yesterdayData.cases) + "**\n\n" +
+    "Deaths: **" + yesterdayData.deaths + " ➡️ " + data.deaths + " 🔺" + (data.deaths - yesterdayData.deaths) + "**\n\n" 
+    if (data.state == undefined) {
+        msg = msg +"Recovered: **" + yesterdayData.recovered + " ➡️ " + data.recovered + " 🔺" + (data.recovered - yesterdayData.recovered) + "**"
     }
     return msg
 }
