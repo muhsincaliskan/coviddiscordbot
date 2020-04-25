@@ -93,23 +93,14 @@ async function getState(message, command) {
     let states = await covid.states(command)
     let yesterdayStates=await covid.states(command,{yesterday:true})
     var stateMessage
-    // for (let index = 0; index < states.length; index++) {
-    //     if (states[index].state.toLowerCase() == command) {
-    //         stateMessage = messageTemplate(states[index])
-    //         break;
-    //     }
-    //     else
-    //         stateMessage = "No state"
-    // }
     if (states.message === undefined) {
         stateMessage =
             "State: **" + states.state + "**\n\n" + messageTemplate(states, yesterdayStates)
         message.channel.send(stateMessage)
     }
     else
-        message.channel.send(stateMessage.message + "\nYou can try ISO code.");
+        message.channel.send(states.message + "\nYou can try ISO code.");
 
-    message.channel.send(stateMessage)
 }
 
 function search(data, word) {
