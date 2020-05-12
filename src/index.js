@@ -93,11 +93,11 @@ async function getsorted(message, sorttype) {
     var top10 = []
     for (let index = 0; index < 10; index++) {
         if (sorttype == "cases")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].cases + "** cases\n"
+            top10[index] = index + 1 + ". **" + sorteddata[index].country + ": **" + sorteddata[index].cases + " cases\n"
         else if (sorttype == "deaths")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].deaths + "** deaths\n"
+            top10[index] = index + 1 + ". **" + sorteddata[index].country + ": **" + sorteddata[index].deaths + " deaths\n"
         else if (sorttype == "recovered")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].recovered + "** recovered\n"
+            top10[index] = index + 1 + ". **" + sorteddata[index].country + ": **" + sorteddata[index].recovered + " recovered\n"
     }
     const embedMsg = {
         color: 0x0099ff,
