@@ -105,7 +105,7 @@ async function getsorted(message, sorttype) {
             name: 'Top 10 ' + sorttype,
             icon_url: 'https://i.imgur.com/nP4sNCes.jpg',
         },
-        description: top10.toLocaleString().replace(/,/g, ""),
+        description: top10.toString().replace(/,/g, "")+" cases",
         footer: { text: 'cov help for commands' }
     }
     message.channel.send({ embed: embedMsg })
