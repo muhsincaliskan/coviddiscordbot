@@ -93,11 +93,11 @@ async function getsorted(message, sorttype) {
     var top10 = []
     for (let index = 0; index < 10; index++) {
         if (sorttype == "cases")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].cases.toLocaleString() + "**\n"
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].cases.toLocaleString('en-US') + "**\n"
         else if (sorttype == "deaths")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].deaths.toLocaleString() + "**\n"
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].deaths.toLocaleString('en-US') + "**\n"
         else if (sorttype == "recovered")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].recovered.toLocaleString() + "**\n"
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].recovered.toLocaleString('en-US') + "**\n"
     }
     const embedMsg = {
         color: 0x0099ff,
@@ -160,42 +160,42 @@ function messageTemplate(data = "", help = false) {
     else {
         embedMsg.fields = [{
             name: "Cases",
-            value: data.cases.toLocaleString(),
+            value: data.cases.toLocaleString('en-US'),
             inline: true
         },
         {
             name: 'Active',
-            value: data.active.toLocaleString(),
+            value: data.active.toLocaleString('en-US'),
             inline: true,
         },
         {
             name: 'Recovered',
-            value: data.recovered.toLocaleString(),
+            value: data.recovered.toLocaleString('en-US'),
             inline: true,
         },
         {
             name: 'Critical',
-            value: data.critical.toLocaleString(),
+            value: data.critical.toLocaleString('en-US'),
             inline: true,
         },
         {
             name: 'Deaths',
-            value: data.deaths.toLocaleString(),
+            value: data.deaths.toLocaleString('en-US'),
             inline: true,
         },
         {
             name: 'Tests',
-            value: data.tests.toLocaleString(),
+            value: data.tests.toLocaleString('en-US'),
             inline: true,
         },
         {
             name: 'Cases Today',
-            value: data.todayCases.toLocaleString(),
+            value: data.todayCases.toLocaleString('en-US'),
             inline: true,
         },
         {
             name: 'Deaths Today',
-            value: data.todayDeaths.toLocaleString(),
+            value: data.todayDeaths.toLocaleString('en-US'),
             inline: true,
         }]
         if (data.country != undefined) {
