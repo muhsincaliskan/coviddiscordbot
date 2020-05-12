@@ -14,17 +14,16 @@ var swearCounter = 0
 
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
-    bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
+    bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'invisible' })
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
+    
     if (message.content.startsWith("cov") && message.content.length==3) {
         getall(message)
     }
     else if (message.content.startsWith("cov ")) {
         var arr = message.content.split(" ")
-        
-        console.log(arr)
         arr = arr.slice(1)
         console.log(arr)
         var getFilterInfo = search(filter, arr)
@@ -41,6 +40,7 @@ bot.on('message', message => {
             swearCounter++;
             console.log(Swear + " deleted")
             message.delete()
+            //this place for trolling :D--------------------------------
             if (swearCounter > 6 && swearCounter < 15) {
                 var indexofReaction = Math.floor((Math.random() * swearReaction.length) + 0)
                 message.reply("\n" + swearReaction[indexofReaction])
@@ -48,7 +48,7 @@ bot.on('message', message => {
             else if (swearCounter == 15) {
                 message.channel.send("Sizle uğraşamayacam\nBulaşmam gereken insanlar var.")
                 swearCounter = 0
-            }
+            }//---------------------------------------------------------
         }
         else if (message.content == ("cov " + command)) {
             if (command == "top" || command == "leaderboard") {
@@ -77,7 +77,6 @@ bot.on('message', message => {
 async function getall(message) {
     let all = await covid.all()
     message.channel.send({ embed: messageTemplate(all) })
-    return 1
 }
 async function getcountry(message, command) {
     let specificCountry = await covid.countries(command)
@@ -86,29 +85,24 @@ async function getcountry(message, command) {
     }
     else
         message.channel.send(specificCountry.message + "\nYou can try ISO code.");
-    return 1
 }
 async function getsorted(message, sorttype) {
-    let sorteddata = await covid.countries(null, { sort: sorttype })
-    var top10 = []
+    let sortedCaseData = await covid.countries(null, { sort: "cases" })
+    let sortedDeathsData=await covid.countries(null, { sort: "deaths" })
+    let sortedRecoveredData=await covid.countries(null, { sort: "recovered" })
+    // var top10Case=new JSONObject()
+    var top10Case = []
+    var top10Deaths=[]
+    var top10Recovered=[]
     for (let index = 0; index < 10; index++) {
-        if (sorttype == "cases")
-            top10[index] = index + 1 + ". **" + sorteddata[index].country + ": **" + sorteddata[index].cases + " cases\n"
-        else if (sorttype == "deaths")
-            top10[index] = index + 1 + ". **" + sorteddata[index].country + ": **" + sorteddata[index].deaths + " deaths\n"
-        else if (sorttype == "recovered")
-            top10[index] = index + 1 + ". **" + sorteddata[index].country + ": **" + sorteddata[index].recovered + " recovered\n"
+             top10Case[index] = index + 1 + ". **" + sortedCaseData[index].country + ": **" + sortedCaseData[index].cases.toLocaleString("en-US")
+             top10Deaths[index] = index + 1 + ". **" + sortedDeathsData[index].country + ": **" + sortedDeathsData[index].deaths.toLocaleString("en-US")
+             top10Recovered[index] = index + 1 + ". **" + sortedRecoveredData[index].country + ": **" + sortedRecoveredData[index].recovered.toLocaleString("en-US")
     }
-    const embedMsg = {
-        color: 0x0099ff,
-        author: {
-            name: 'Top 10 ' + sorttype,
-            icon_url: 'https://i.imgur.com/nP4sNCes.jpg',
-        },
-        description: top10.toString().replace(/,/g, ""),
-        footer: { text: 'cov help for commands' }
-    }
-    message.channel.send({ embed: embedMsg })
+    top10Case=top10Case.join("\n")
+    top10Deaths=top10Deaths.join("\n")
+    top10Recovered=top10Recovered.join("\n")
+    message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},false,true) })
 }
 async function getState(message, command) {
     let states = await covid.states(command)
@@ -117,7 +111,6 @@ async function getState(message, command) {
     }
     else
         message.channel.send(states.message + "\nYou can try ISO code.");
-
 }
 function search(data, word) {
     let Swear = ""
@@ -131,7 +124,7 @@ function search(data, word) {
     }
     return { isSwear: false, Swear: Swear }
 }
-function messageTemplate(data = "", help = false) {
+function messageTemplate(data = "", help = false,sort=false) {
     const embedMsg = {
         color: 0x0099ff,
         author: {
@@ -154,8 +147,35 @@ function messageTemplate(data = "", help = false) {
             "GET SPECIFIC COUNTRY DATA: `cov country name`,\n `cov country iso2` or `iso3` code\n" +
             "Example: `cov Turkey`, `cov tr`, `cov tur`\n\n" +
             "GET TOP 10 CASE: `cov top`, `cov leaderboard`\n" +
-            "Get Commands: `cov help`\n\n" +
-            "This bot created by killerbean and BOT uses NovelCovid API"
+            "Get Commands: `cov help`\n\n" 
+           
+        embedMsg.fields=[{
+            name:"Developer",
+            value:"killerbean#8689",
+            inline:true
+        },{name:"API", value:"[NovelCOVID](https://github.com/NovelCOVID/node-api)",inline:true}]
+    }
+    else if (sort) {
+        embedMsg.author.name = "COVID-19 Leaderboard"
+        embedMsg.fields=[
+            {
+                name: "Top 10 Cases",
+                value: data.top10Case,
+                inline: true
+            },
+          
+            {
+                name: 'Top 10 Deaths',
+                value: data.top10Deaths,
+                inline: true,
+            },
+           
+            {
+                name: 'Top 10 Recovered',
+                value: data.top10Recovered,
+                inline: true,
+            }
+        ]
     }
     else {
         embedMsg.fields = [{
