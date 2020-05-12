@@ -170,12 +170,12 @@ function messageTemplate(data = "", help = false) {
         },
         {
             name: 'Recovered',
-            value: data.recovered.toLocaleString('en-US'),
+            value: "",
             inline: true,
         },
         {
             name: 'Critical',
-            value: data.critical.toLocaleString('en-US'),
+            value: "",
             inline: true,
         },
         {
@@ -201,9 +201,13 @@ function messageTemplate(data = "", help = false) {
         if (data.country != undefined) {
             embedMsg.thumbnail.url = data.countryInfo.flag
             embedMsg.author.name = "COVID-19 Statistics for " + data.country + " (" + data.countryInfo.iso2 + ")"
+            embedMsg.fields[2].value=data.recovered.toLocaleString('en-US')
+            embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
         }
         else if (data.country == undefined && data.state == undefined) {
             embedMsg.author.name = "COVID-19 Total Data for " + data.affectedCountries + " countries"
+            embedMsg.fields[2].value=data.recovered.toLocaleString('en-US')
+            embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
         }
         else if (data.state != undefined) {
             embedMsg.author.name = "COVID-19 Statistics for " + data.state
