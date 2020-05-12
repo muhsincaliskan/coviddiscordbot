@@ -1,4 +1,4 @@
-require("dotenv").config()
+// require("dotenv").config()
 const { NovelCovid } = require('novelcovid')
 const covid = new NovelCovid()
 const Discord = require("discord.js")
@@ -212,4 +212,4 @@ function messageTemplate(data = "", help = false) {
     }
     return embedMsg
 }
-bot.login(process.env.BOT_TOKEN)
+bot.login("NzAwNjkzMjMwMDkzNTk4NzMw.Xpmrmg.iMWsVpOY20H31yfhLE0o4nXJV2k")
