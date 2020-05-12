@@ -5,10 +5,10 @@ const Discord = require("discord.js")
 const bot = new Discord.Client()
 
 var fs = require("fs")
-let raw = fs.readFileSync("../filter.json")
+let raw = fs.readFileSync("./filter.json")
 let filter = JSON.parse(raw)
 
-let rawReact = fs.readFileSync("../reactions.json")
+let rawReact = fs.readFileSync("./reactions.json")
 let swearReaction = JSON.parse(rawReact)
 var swearCounter = 0
 
