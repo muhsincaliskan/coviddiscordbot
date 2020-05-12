@@ -93,11 +93,11 @@ async function getsorted(message, sorttype) {
     var top10 = []
     for (let index = 0; index < 10; index++) {
         if (sorttype == "cases")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].cases.toLocaleString('en-US') + "**\n"
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].cases + "**\n"
         else if (sorttype == "deaths")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].deaths.toLocaleString('en-US') + "**\n"
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].deaths + "**\n"
         else if (sorttype == "recovered")
-            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].recovered.toLocaleString('en-US') + "**\n"
+            top10[index] = index + 1 + ". " + sorteddata[index].country + ": **" + sorteddata[index].recovered + "**\n"
     }
     const embedMsg = {
         color: 0x0099ff,
@@ -105,7 +105,7 @@ async function getsorted(message, sorttype) {
             name: 'Top 10 ' + sorttype,
             icon_url: 'https://i.imgur.com/nP4sNCes.jpg',
         },
-        description: top10.toString().replace(/,/g, ""),
+        description: top10.toLocaleString().replace(/,/g, ""),
         footer: { text: 'cov help for commands' }
     }
     message.channel.send({ embed: embedMsg })
