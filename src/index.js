@@ -14,7 +14,7 @@ var swearCounter = 0
 
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
-    bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'invisible' })
+    bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
