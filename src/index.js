@@ -144,8 +144,9 @@ function messageTemplate(data = "", help = false,sort=false) {
         embedMsg.author.name = "Commands"
         embedMsg.description =
             "GET TOTAL DATA: `cov` or `cov all`\n\n" +
-            "GET SPECIFIC COUNTRY DATA: `cov country name`,\n `cov country iso2` or `iso3` code\n" +
+            "GET SPECIFIC COUNTRY DATA: `cov <country name>`,\n `cov <country iso2>` or `iso3` code\n" +
             "Example: `cov Turkey`, `cov tr`, `cov tur`\n\n" +
+            "GET SPECIFIC STATE DATA FOR USA : `cov usa <state name>`\n Example: `cov usa new york`\n\n" +
             "GET TOP 10 CASE: `cov top`, `cov leaderboard`\n" +
             "Get Commands: `cov help`\n\n" 
            
