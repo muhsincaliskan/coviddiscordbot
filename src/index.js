@@ -154,7 +154,9 @@ function messageTemplate(data = "", help = false,sort=false) {
             name:"Developer",
             value:"killerbean#8689",
             inline:true
-        },{name:"API", value:"[NovelCOVID](https://github.com/NovelCOVID/node-api)",inline:true}]
+        },
+        {name:"Invite",value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
+        {name:"API", value:"[NovelCOVID](https://github.com/NovelCOVID/node-api)",inline:true}]
     }
     else if (sort) {
         embedMsg.author.name = "COVID-19 Leaderboard"
