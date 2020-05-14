@@ -128,12 +128,10 @@ async function getsorted(message, sorttype) {
     message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},false,true) })
 }
 async function getState(message, command) {
-   
-    if (states.message||command.length<1) 
+       let states = await covid.states(command) 
+    if (states.message) 
         return message.channel.send(states.message + "\nYou can try ISO code.");
-    let states = await covid.states(command)    
     return message.channel.send({ embed: messageTemplate(states) })
-        
 }
 // async function graph(){
 //     let graphData = ['global', 'all'].includes(args[0].toLowerCase()) ? {timeline: await api.historical.all({days: -1})} : await api.historical.countries({ country: args[0], days: -1 })
@@ -171,11 +169,11 @@ function messageTemplate(data = "", help = false,sort=false) {
         embedMsg.author.name = "Commands"          
         embedMsg.fields=
         [
-            {name:"Total Data",value:"`cov` or `cov all`",inline:true},
+            {name:"Total Data",value:"`cov` or `cov all`\nCOVID-19 Total Statistic",inline:true},
             {name:"Specific Country Data",value:"`cov <country country name||iso2||iso3>`\nExample: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
             {name:"Specific US State Data",value:"`cov usa <state name>`\n Example: `cov usa new york`",inline:true},
             {name:"Leaderboard",value:"`cov top`, `cov leaderboard`",inline:true},
-            {name:"Graph",value:"`cov graph all`, `cov graph <country name||iso2||iso3>`\nNot implemented",inline:true},
+            {name:"Graph",value:"`cov graph all`, `cov graph<country name||iso2||iso3>`\nNot implemented",inline:true},
             {name:"Commands",value:"`cov help`",inline:true},
             {name:"Developer",value:"killerbean#8689",inline:true},
             {name:"Invite",value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
