@@ -85,7 +85,7 @@ bot.on('message', message => {
                 command = command.slice(4)
                 getState(message, command)
             }
-             else if (command.startsWith("graph ")) {
+             else if (command.startsWith("graph")) {
             //     command=command.slice(command.length+1)
             //     graph(command)
                 message.channel.send("Not implemented yet.")
