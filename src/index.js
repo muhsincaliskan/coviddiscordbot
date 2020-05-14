@@ -35,6 +35,7 @@ var swearCounter = 0
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
+    bot.user.setActivity('cov help')
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
@@ -128,7 +129,7 @@ async function getsorted(message, sorttype) {
     message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},false,true) })
 }
 async function getState(message, command) {
-       let states = await covid.states(command) 
+    let states = await covid.states(command) 
     if (states.message) 
         return message.channel.send(states.message + "\nYou can try ISO code.");
     return message.channel.send({ embed: messageTemplate(states) })
