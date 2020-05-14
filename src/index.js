@@ -170,9 +170,9 @@ function messageTemplate(data = "", help = false,sort=false) {
         embedMsg.fields=
         [
             {name:"Total Data",value:"`cov` or `cov all`\nshows global COVID-19 Stats",inline:true},
-            {name:"Specific Country Data",value:"`cov <country country name||iso2||iso3>`\nExample: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
+            {name:"Country",value:"`cov <country country name||iso2||iso3>`\nEx: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
             {name:"Leaderboard",value:"`cov top`, `cov leaderboard`\nshows Top 10 cases,death and recovered stats",inline:true},
-            {name:"Specific US State Data",value:"`cov usa <state name>`\n Example: `cov usa new york`",inline:true},
+            {name:"US State",value:"`cov usa <state name>`\n Ex: `cov usa new york`",inline:true},
             {name:"Graph",value:"`cov graph all`, `cov graph<country name||iso2||iso3>`\nNot implemented",inline:true},
             {name:"Commands",value:"`cov help`\n shows all commands",inline:true},
             {name:"Developer",value:"killerbean#8689",inline:true},
