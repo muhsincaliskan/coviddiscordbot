@@ -1,6 +1,7 @@
 // require("dotenv").config()
 const { NovelCovid } = require('novelcovid')
 const covid = new NovelCovid()
+// const { CanvasRenderService } = require('chartjs-node-canvas');
 const Discord = require("discord.js")
 const bot = new Discord.Client()
 
@@ -12,6 +13,25 @@ let rawReact = fs.readFileSync("./reactions.json")
 let swearReaction = JSON.parse(rawReact)
 var swearCounter = 0
 
+// const setup = (ChartJS) => {
+//     ChartJS.defaults.global.defaultFontColor='#fff'
+//     ChartJS.defaults.global.defaultFontStyle='bold'
+//     ChartJS.defaults.global.defaultFontFamily='Helvetica Neue, Helvetica, Arial, sans-serif'
+//     ChartJS.plugins.register({
+//       beforeInit: function(chart){
+//         chart.legend.afterFit = function() { this.height += 35 }
+//       },
+//       beforeDraw: (chart) => {
+//         const ctx = chart.ctx;
+//         ctx.save();
+//         ctx.fillStyle = '#2F3136';
+//         ctx.fillRect(0, 0, chart.width, chart.height);
+//         ctx.restore();
+//       }
+//     })
+//   }
+    
+const lineRenderer = new CanvasRenderService(1200, 600, setup)
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
@@ -40,7 +60,7 @@ bot.on('message', message => {
             swearCounter++;
             console.log(Swear + " deleted")
             message.delete()
-            //this place for trolling :D--------------------------------
+            //this is for trolling :D--------------------------------
             if (swearCounter > 6 && swearCounter < 15) {
                 var indexofReaction = Math.floor((Math.random() * swearReaction.length) + 0)
                 message.reply("\n" + swearReaction[indexofReaction])
@@ -65,6 +85,11 @@ bot.on('message', message => {
                 command = command.slice(4)
                 getState(message, command)
             }
+             else if (command.startsWith("graph ")) {
+            //     command=command.slice(command.length+1)
+            //     graph(command)
+                message.channel.send("Not implemented yet.")
+             }
             else {
                 getcountry(message, command)
             }
@@ -80,17 +105,15 @@ async function getall(message) {
 }
 async function getcountry(message, command) {
     let specificCountry = await covid.countries(command)
-    if (specificCountry.message === undefined) {
-        message.channel.send({ embed: messageTemplate(specificCountry) })
-    }
-    else
-        message.channel.send(specificCountry.message + "\nYou can try ISO code.");
+    if (specificCountry.message) 
+       return message.channel.send(specificCountry.message + "\nYou can try ISO code.");
+    return message.channel.send({ embed: messageTemplate(specificCountry) })
 }
 async function getsorted(message, sorttype) {
     let sortedCaseData = await covid.countries(null, { sort: "cases" })
     let sortedDeathsData=await covid.countries(null, { sort: "deaths" })
     let sortedRecoveredData=await covid.countries(null, { sort: "recovered" })
-    // var top10Case=new JSONObject()
+ 
     var top10Case = []
     var top10Deaths=[]
     var top10Recovered=[]
@@ -105,13 +128,19 @@ async function getsorted(message, sorttype) {
     message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},false,true) })
 }
 async function getState(message, command) {
-    let states = await covid.states(command)
-    if (states.message === undefined) {
-        message.channel.send({ embed: messageTemplate(states) })
-    }
-    else
-        message.channel.send(states.message + "\nYou can try ISO code.");
+   
+    if (states.message||command.length<1) 
+        return message.channel.send(states.message + "\nYou can try ISO code.");
+    let states = await covid.states(command)    
+    return message.channel.send({ embed: messageTemplate(states) })
+        
 }
+// async function graph(){
+//     let graphData = ['global', 'all'].includes(args[0].toLowerCase()) ? {timeline: await api.historical.all({days: -1})} : await api.historical.countries({ country: args[0], days: -1 })
+
+    
+    
+// }
 function search(data, word) {
     let Swear = ""
     for (let index = 0; index < data.length; index++) {
@@ -135,92 +164,41 @@ function messageTemplate(data = "", help = false,sort=false) {
         thumbnail: {
             url: "",
         },
-        fields: [
-
-        ],
+        fields: [],
         footer: { text: '`cov help` for commands' }
     };
     if (help) {
-        embedMsg.author.name = "Commands"
-        embedMsg.description =
-            "GET TOTAL DATA: `cov` or `cov all`\n\n" +
-            "GET SPECIFIC COUNTRY DATA: `cov <country name>`,\n `cov <country iso2>` or `iso3` code\n" +
-            "Example: `cov Turkey`, `cov tr`, `cov tur`\n\n" +
-            "GET SPECIFIC STATE DATA FOR USA : `cov usa <state name>`\n Example: `cov usa new york`\n\n" +
-            "GET TOP 10 CASE: `cov top`, `cov leaderboard`\n" +
-            "Get Commands: `cov help`\n\n" 
-           
-        embedMsg.fields=[{
-            name:"Developer",
-            value:"killerbean#8689",
-            inline:true
-        },
-        {name:"Invite",value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
-        {name:"API", value:"[NovelCOVID](https://github.com/NovelCOVID/node-api)",inline:true}]
+        embedMsg.author.name = "Commands"          
+        embedMsg.fields=
+        [
+            {name:"Total Data",value:"`cov` or `cov all`",inline:true},
+            {name:"Specific Country Data",value:"`cov <country country name||iso2||iso3>`\nExample: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
+            {name:"Specific US State Data",value:"`cov usa <state name>`\n Example: `cov usa new york`",inline:true},
+            {name:"Leaderboard",value:"`cov top`, `cov leaderboard`",inline:true},
+            {name:"Graph",value:"`cov graph all`, `cov graph <country name||iso2||iso3>`\nNot implemented",inline:true},
+            {name:"Commands",value:"`cov help`",inline:true},
+            {name:"Developer",value:"killerbean#8689",inline:true},
+            {name:"Invite",value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
+            {name:"API", value:"[NovelCOVID](https://github.com/NovelCOVID/node-api)",inline:true}]
     }
     else if (sort) {
         embedMsg.author.name = "COVID-19 Leaderboard"
         embedMsg.fields=[
-            {
-                name: "Top 10 Cases",
-                value: data.top10Case,
-                inline: true
-            },
-          
-            {
-                name: 'Top 10 Deaths',
-                value: data.top10Deaths,
-                inline: true,
-            },
-           
-            {
-                name: 'Top 10 Recovered',
-                value: data.top10Recovered,
-                inline: true,
-            }
+            {name: "Top 10 Cases",value: data.top10Case,inline: true},
+            {name: 'Top 10 Deaths',value: data.top10Deaths,inline: true,},
+            {name: 'Top 10 Recovered',value: data.top10Recovered,inline: true}
         ]
     }
     else {
-        embedMsg.fields = [{
-            name: "Cases",
-            value: data.cases.toLocaleString('en-US'),
-            inline: true
-        },
-        {
-            name: 'Active',
-            value: data.active.toLocaleString('en-US'),
-            inline: true,
-        },
-        {
-            name: 'Recovered',
-            value: "",
-            inline: true,
-        },
-        {
-            name: 'Critical',
-            value: "",
-            inline: true,
-        },
-        {
-            name: 'Deaths',
-            value: data.deaths.toLocaleString('en-US'),
-            inline: true,
-        },
-        {
-            name: 'Tests',
-            value: data.tests.toLocaleString('en-US'),
-            inline: true,
-        },
-        {
-            name: 'Cases Today',
-            value: data.todayCases.toLocaleString('en-US'),
-            inline: true,
-        },
-        {
-            name: 'Deaths Today',
-            value: data.todayDeaths.toLocaleString('en-US'),
-            inline: true,
-        }]
+        embedMsg.fields = [
+            {name: "Cases",value: data.cases.toLocaleString('en-US'),inline: true},
+            {name: 'Active',value: data.active.toLocaleString('en-US'),inline: true},
+            {name: 'Recovered',value: "",inline: true},
+            {name: 'Critical',value: "",inline: true},
+            {name: 'Deaths',value: data.deaths.toLocaleString('en-US'),inline: true},
+            {name: 'Tests',value: data.tests.toLocaleString('en-US'),inline: true},
+            {name: 'Cases Today',value: data.todayCases.toLocaleString('en-US'),inline: true},
+            {name: 'Deaths Today',value: data.todayDeaths.toLocaleString('en-US'),inline: true}]
         if (data.country != undefined) {
             embedMsg.thumbnail.url = data.countryInfo.flag
             embedMsg.author.name = "COVID-19 Statistics for " + data.country + " (" + data.countryInfo.iso2 + ")"
