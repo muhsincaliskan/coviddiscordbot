@@ -31,7 +31,7 @@ var swearCounter = 0
 //     })
 //   }
     
-const lineRenderer = new CanvasRenderService(1200, 600, setup)
+// const lineRenderer = new CanvasRenderService(1200, 600, setup)
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
