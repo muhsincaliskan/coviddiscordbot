@@ -5,13 +5,14 @@ const covid = new NovelCovid()
 const Discord = require("discord.js")
 const bot = new Discord.Client()
 
+import localize from "../translations/translate.js"
 var fs = require("fs")
 let raw = fs.readFileSync("./filter.json")
 let filter = JSON.parse(raw)
 
-let rawReact = fs.readFileSync("./reactions.json")
-let swearReaction = JSON.parse(rawReact)
-var swearCounter = 0
+// let rawReact = fs.readFileSync("./reactions.json")
+// let swearReaction = JSON.parse(rawReact)
+// var swearCounter = 0
 
 // const setup = (ChartJS) => {
 //     ChartJS.defaults.global.defaultFontColor='#fff'
@@ -38,6 +39,7 @@ bot.on('ready', () => {
     bot.user.setActivity('cov help',{type:'CUSTOM_STATUS'})
 })
 bot.on('message', message => {
+    setLocale(message.guild.id)
     message.content = message.content.toLowerCase()
     
     if (message.content.startsWith("cov") && message.content.length==3) {
@@ -89,7 +91,7 @@ bot.on('message', message => {
              else if (command.startsWith("graph")) {
             //     command=command.slice(command.length+1)
             //     graph(command)
-                message.channel.send("Not implemented yet.")
+                message.channel.send(localize.translate("Not implemented yet."))
              }
             else {
                 getcountry(message, command)
@@ -100,6 +102,11 @@ bot.on('message', message => {
         }
     }
 })
+function setLocale(id){
+    if (id=="700698867624181800"||id=="500855916296404992") {
+        localize.setLocale("tr")
+    }
+}
 async function getall(message) {
     let all = await covid.all()
     message.channel.send({ embed: messageTemplate(all) })
@@ -164,48 +171,49 @@ function messageTemplate(data = "", help = false,sort=false) {
             url: "",
         },
         fields: [],
-        footer: { text: '`cov help` for commands' }
+        footer: { text: localize.translate("`$[1]` for commands",`cov help`) }
     };
     if (help) {
-        embedMsg.author.name = "Commands"          
+        embedMsg.author.name = localize.translate("Commands")          
         embedMsg.fields=
         [
-            {name:"Total Data",value:"`cov` or `cov all`\nshows global COVID-19 Stats",inline:true},
-            {name:"Country",value:"`cov <country country name||iso2||iso3>`\nEx: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
-            {name:"Leaderboard",value:"`cov top`, `cov leaderboard`\nshows Top 10 cases,death and recovered stats",inline:true},
-            {name:"US State",value:"`cov usa <state name>`\n Ex: `cov usa new york`",inline:true},
-            {name:"Graph",value:"`cov graph all`, `cov graph<country name||iso2||iso3>`\nNot implemented",inline:true},
-            {name:"Commands",value:"`cov help`\n shows all commands",inline:true},
-            {name:"Developer",value:"killerbean#8689",inline:true},
-            {name:"Invite",value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
+            {name:localize.translate("Total Data"),value:"`cov` or `cov all`\n"+localize.translate("shows global COVID-19 Stats"),inline:true},
+            {name:localize.translate("Country"),value:"`cov country name||iso2||iso3>`\nEx: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
+            {name:localize.translate("Leaderboard"),value:"`cov top`, `cov leaderboard`\n"+localize.translate("shows Top 10 cases,death and recovered stats"),inline:true},
+            {name:localize.translate("US State"),value:"`cov usa <state name>`\n Ex: `cov usa new york`",inline:true},
+            {name:localize.translate("Graph"),value:"`cov graph all`, `cov graph<country name||iso2||iso3>`\n"+localize.translate("Not implemented yet."),inline:true},
+            {name:localize.translate("Commands"),value:"`cov help`\n"+localize.translate("shows all commands"),inline:true},
+            {name:localize.translate("Developer"),value:"killerbean#8689",inline:true},
+            {name:localize.translate("Invite"),value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
             {name:"API", value:"[NovelCOVID](https://github.com/NovelCOVID/node-api)",inline:true}]
     }
     else if (sort) {
-        embedMsg.author.name = "COVID-19 Leaderboard"
+        embedMsg.author.name = "COVID-19"+localize.translate("Leaderboard")
         embedMsg.fields=[
-            {name: "Top 10 Cases",value: data.top10Case,inline: true},
-            {name: 'Top 10 Deaths',value: data.top10Deaths,inline: true,},
-            {name: 'Top 10 Recovered',value: data.top10Recovered,inline: true}
+            {name: localize.translate("Top 10 Cases"),value: data.top10Case,inline: true},
+            {name: localize.translate('Top 10 Deaths'),value: data.top10Deaths,inline: true,},
+            {name: localize.translate('Top 10 Recovered'),value: data.top10Recovered,inline: true}
         ]
     }
     else {
-        embedMsg.fields = [
-            {name: "Cases",value: data.cases.toLocaleString('en-US'),inline: true},
-            {name: 'Active',value: data.active.toLocaleString('en-US'),inline: true},
-            {name: 'Recovered',value: "",inline: true},
-            {name: 'Critical',value: "",inline: true},
-            {name: 'Deaths',value: data.deaths.toLocaleString('en-US'),inline: true},
-            {name: 'Tests',value: data.tests.toLocaleString('en-US'),inline: true},
-            {name: 'Cases Today',value: data.todayCases.toLocaleString('en-US'),inline: true},
-            {name: 'Deaths Today',value: data.todayDeaths.toLocaleString('en-US'),inline: true}]
+        embedMsg.fields =[
+            {name: localize.translate("Cases"),value: data.cases.toLocaleString('en-US'),inline: true},
+            {name: localize.translate('Active'),value: data.active.toLocaleString('en-US'),inline: true},
+            {name: localize.translate('Recovered'),value: "",inline: true},
+            {name: localize.translate('Critical'),value: "",inline: true},
+            {name: localize.translate('Deaths'),value: data.deaths.toLocaleString('en-US'),inline: true},
+            {name: localize.translate('Tests'),value: data.tests.toLocaleString('en-US'),inline: true},
+            {name: localize.translate('Cases Today'),value: data.todayCases.toLocaleString('en-US'),inline: true},
+            {name: localize.translate('Deaths Today'),value: data.todayDeaths.toLocaleString('en-US'),inline: true}
+        ]
         if (data.country != undefined) {
             embedMsg.thumbnail.url = data.countryInfo.flag
-            embedMsg.author.name = "COVID-19 Statistics for " + data.country + " (" + data.countryInfo.iso2 + ")"
+            embedMsg.author.name = "COVID-19 "+ "Statistics for " + data.country + " (" + data.countryInfo.iso2 + ")"
             embedMsg.fields[2].value=data.recovered.toLocaleString('en-US')
             embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
         }
         else if (data.country == undefined && data.state == undefined) {
-            embedMsg.author.name = "COVID-19 Total Data for " + data.affectedCountries + " countries"
+            embedMsg.author.name ="COVID-19 "+localize.translate("Total Data for $[1] countries",data.affectedCountries)
             embedMsg.fields[2].value=data.recovered.toLocaleString('en-US')
             embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
         }

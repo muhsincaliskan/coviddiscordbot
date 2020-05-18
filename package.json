@@ -4,7 +4,8 @@
   "description": "COVID-19 discord bot",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node -r esm ./src/index.js",
+    "dev": "nodemon -r esm ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -22,6 +23,7 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
+    "localize": "^0.4.7",
     "novelcovid": "^1.2.7"
   }
 }
