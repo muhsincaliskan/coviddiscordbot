@@ -23,6 +23,7 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
     "localize": "^0.4.7",
     "novelcovid": "^1.2.7"
   }
