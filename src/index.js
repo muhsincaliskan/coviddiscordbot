@@ -61,15 +61,15 @@ bot.on('message', message => {
             swearCounter++;
             console.log(Swear + " deleted")
             message.delete()
-            //this is for trolling :D--------------------------------
-            if (swearCounter > 6 && swearCounter < 15) {
-                var indexofReaction = Math.floor((Math.random() * swearReaction.length) + 0)
-                message.reply("\n" + swearReaction[indexofReaction])
-            }
-            else if (swearCounter == 15) {
-                message.channel.send("Sizle uğraşamayacam\nBulaşmam gereken insanlar var.")
-                swearCounter = 0
-            }//---------------------------------------------------------
+            // //this is for trolling :D--------------------------------
+            // if (swearCounter > 6 && swearCounter < 15) {
+            //     var indexofReaction = Math.floor((Math.random() * swearReaction.length) + 0)
+            //     message.reply("\n" + swearReaction[indexofReaction])
+            // }
+            // else if (swearCounter == 15) {
+            //     message.channel.send("Sizle uğraşamayacam\nBulaşmam gereken insanlar var.")
+            //     swearCounter = 0
+            // }//---------------------------------------------------------
         }
         else if (message.content == ("cov " + command)) {
             if (command == "top" || command == "leaderboard") {
