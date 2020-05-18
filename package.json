@@ -1,0 +1,27 @@
+{
+  "name": "coviddiscordbot",
+  "version": "1.0.0",
+  "description": "COVID-19 discord bot",
+  "main": "./src/indexx.js",
+  "scripts": {
+    "start": "node ./src/indexx.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "covid",
+    "corona",
+    "virus",
+    ""
+  ],
+  "author": "Ahmet Muhsin Çalışkan aka Killerbean",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "2.0.4"
+  },
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "novelcovid": "^1.2.7"
+  }
+}
