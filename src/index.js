@@ -106,6 +106,8 @@ function setLocale(id){
     if (id=="700698867624181800"||id=="500855916296404992") {
         localize.setLocale("tr")
     }
+    else
+        myLocalize.clearTranslations();
 }
 async function getall(message) {
     let all = await covid.all()
