@@ -107,7 +107,7 @@ function setLocale(id){
         localize.setLocale("tr")
     }
     else
-        localize.clearTranslations();
+        localize.setLocale();
 }
 async function getall(message) {
     let all = await covid.all()
