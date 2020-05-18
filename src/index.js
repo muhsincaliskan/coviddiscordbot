@@ -11,7 +11,7 @@ let filter = JSON.parse(raw)
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
-    bot.user.setActivity(name:'cov help',{type:'CUSTOM_STATUS'})
+   
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
