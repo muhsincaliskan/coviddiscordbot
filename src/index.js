@@ -173,7 +173,7 @@ function messageTemplate(data = "", help = false,sort=false) {
             url: "",
         },
         fields: [],
-        footer: { text: localize.translate("`$[1]` for commands",`cov help`) }
+        footer: { text: localize.translate("`$[1]` for commands","`cov help`") }
     };
     if (help) {
         embedMsg.author.name = localize.translate("Commands")          
