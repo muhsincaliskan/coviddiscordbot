@@ -53,6 +53,7 @@ bot.on('message', message => {
         if (isSwear) {
             swearCounter++;
             console.log(Swear + " deleted")
+            return
             // message.delete()
             //this is for trolling :D--------------------------------
             // if (swearCounter > 6 && swearCounter < 15) {
@@ -74,7 +75,7 @@ bot.on('message', message => {
             else if (command == "help") {
                 message.channel.send({ embed: messageTemplate("",true) })
             }
-            else if (command=="usa"&&args.length>1) {
+            else if (command=="state"&&args.length>1) {
                 command=args.slice(1).join(" ")
                 getState(message, command)
             }
@@ -170,7 +171,7 @@ function messageTemplate(data = "", help = false,sort=false) {
             {name:localize.translate("Total Data"),value:"`cov` or `cov all`\n"+localize.translate("shows global COVID-19 Stats"),inline:true},
             {name:localize.translate("Country"),value:"`cov country name||iso2||iso3>`\nEx: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
             {name:localize.translate("Leaderboard"),value:"`cov top`, `cov leaderboard`\n"+localize.translate("shows Top 10 cases,death and recovered stats"),inline:true},
-            {name:localize.translate("US State"),value:"`cov usa <state name>`\n Ex: `cov usa new york`",inline:true},
+            {name:localize.translate("US State"),value:"`cov state <state name>`\n Ex: `cov state new york`",inline:true},
             {name:localize.translate("Graph"),value:"`cov graph all`, `cov graph<country name||iso2||iso3>`\n"+localize.translate("Not implemented yet."),inline:true},
             {name:localize.translate("Commands"),value:"`cov help`\n"+localize.translate("shows all commands"),inline:true},
             {name:localize.translate("Developer"),value:"killerbean#8689",inline:true},
