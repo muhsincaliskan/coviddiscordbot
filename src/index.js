@@ -6,9 +6,9 @@ const Discord = require("discord.js")
 const bot = new Discord.Client()
 
 import {localize,localizeCountry} from "../translations/translate.js"
-var fs = require("fs")
-let raw = fs.readFileSync("./filter.json")
-let filter = JSON.parse(raw)
+var Filter = require('bad-words')
+var filter = new Filter();
+
 const prefix="cov"
 // const setup = (ChartJS) => {
 //     ChartJS.defaults.global.defaultFontColor='#fff'
@@ -42,17 +42,13 @@ bot.on('message', message => {
     
     const args = message.content.slice(prefix.length).split(/ +/)
     args.shift()
-    console.log("Command: "+args.join(" "))
+    var command=args.join(" ")
+    console.log("Command: "+command)
     if (!args.length) getall(message)
     else {
-        
-        var getFilterInfo = search(filter, args)
-        var isSwear = getFilterInfo.isSwear
-        var Swear = getFilterInfo.Swear
-        var command=args[0]
+        var isSwear = filter.isProfane(command)
         if (isSwear) {
-            swearCounter++;
-            console.log(Swear + " deleted")
+            console.log(command + " deleted")
             return
             // message.delete()
             //this is for trolling :D--------------------------------
@@ -67,7 +63,7 @@ bot.on('message', message => {
         }
         else {
             if (command == "top" || command == "leaderboard") {
-                getsorted(message, "cases")
+                getsorted(message)
             }
             else if (command == "all") {
                 getall(message)
@@ -75,17 +71,16 @@ bot.on('message', message => {
             else if (command == "help") {
                 message.channel.send({ embed: messageTemplate("",true) })
             }
-            else if (command=="state"&&args.length>1) {
+            else if (command.indexOf("state")>-1&&args.length>1) {
                 command=args.slice(1).join(" ")
                 getState(message, command)
             }
-            else if (command=="graph"&&args.length>1) {
+            else if (command.indexOf("graph")>-1&&args.length>1) {
                 command=args.slice(1).join(" ")
                 // graph(message,command)
                 message.channel.send("Not implemented yet.")
              }
             else {
-                command=args.join(" ")
                 let country=localizeCountry(command)
                 getcountry(message, country)
             }
@@ -106,10 +101,10 @@ async function getall(message) {
 async function getcountry(message, command) {
     let specificCountry = await covid.countries({country:command})
     if (specificCountry.message) 
-       return message.channel.send(specificCountry.message + "\nYou can try ISO code.");
+       return message.channel.send(specificCountry.message + "\nYou can try ISO code or enter `cov help` for commands");
     return message.channel.send({ embed: messageTemplate(specificCountry) })
 }
-async function getsorted(message, sorttype) {
+async function getsorted(message) {
     let sortedCaseData = await covid.countries( { sort: "cases" })
     let sortedDeathsData=await covid.countries( { sort: "deaths" })
     let sortedRecoveredData=await covid.countries( { sort: "recovered" })
@@ -130,7 +125,7 @@ async function getsorted(message, sorttype) {
 async function getState(message, command) {
     let states = await covid.states({state:command}) 
     if (states.message) 
-        return message.channel.send(states.message + "\nYou can try ISO code.");
+        return message.channel.send(states.message + "\nYou can try ISO code or enter `cov help` for commands");
     return message.channel.send({ embed: messageTemplate(states) })
 }
 // async function graph(){
@@ -139,18 +134,7 @@ async function getState(message, command) {
     
     
 // }
-function search(data, word) {
-    let Swear = ""
-    for (let index = 0; index < data.length; index++) {
-        for (let index2 = 0; index2 < word.length; index2++) {
-            if (data[index].includes(word[index2])) {
-                Swear = word[index2]
-                return { isSwear: true, Swear: Swear }
-            }
-        }
-    }
-    return { isSwear: false, Swear: Swear }
-}
+
 function messageTemplate(data = "", help = false,sort=false) {
     const embedMsg = {
         color: 0x0099ff,
@@ -210,7 +194,7 @@ function messageTemplate(data = "", help = false,sort=false) {
             embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
         }
         else if (data.state != undefined) {
-            embedMsg.author.name = "COVID-19 Statistics for " + data.state
+            embedMsg.author.name = "COVID-19"+localize.translate("Statistics for $[1]", data.state)
             embedMsg.fields.splice(2, 2)
         }
     }

@@ -21,6 +21,7 @@
     "nodemon": "2.0.4"
   },
   "dependencies": {
+    "bad-words": "^3.0.3",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
