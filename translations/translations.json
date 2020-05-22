@@ -22,11 +22,12 @@
     "You can try ISO code!":{"tr":"ISO kodunu deneyebilirsin!"},
     "State not found. Please provide valid state!":{"tr":"Eyalet Bulunamadı. Lütfen geçerli bir eyalet giriniz"},
     "Country not found or doesn't have any cases":{"tr":"Ülke bulunamadı veye henüz herhangi bir vaka yok"},
-    "`$[1]` for commands":{"tr":"Komutlar için `$[1]`"},
+    "$[1] for commands":{"tr":"Komutlar için `$[1]`"},
     "shows global COVID-19 Stats":{"tr":"global COVID-19 istatistiklerini gösterir."},
     "shows Top 10 cases,death and recovered stats":{"tr":"İlk 10'daki vaka,ölüm ve iyileşen sayısı"},
     "shows all commands":{"tr":"tüm komutları gösterir"},
     "state name":{"tr":"eyalet ismi"},
     "country name":{"tr":"ülke ismi"},
-    "Not implemented yet.":{"tr":"Yapım aşamasında.Çalışmıyor"}
+    "Not implemented yet.":{"tr":"Yapım aşamasında.Çalışmıyor"},
+    "Statistics for $[1]($[2])":{"tr":"$[1]($[2]) için veriler"}
 }
