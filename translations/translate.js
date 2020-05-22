@@ -10,6 +10,8 @@ function localizeCountry(country) {
     if(countries.isValid(country)) 
         return country
     else{
+        if(country.charAt(0)=="i")
+            country=country.replace("i","İ")
         var country_tr=countries.getAlpha2Code(country,"tr")
         return country_tr?country_tr.toLowerCase():country
     }

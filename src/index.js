@@ -143,7 +143,7 @@ function search(data, word) {
     let Swear = ""
     for (let index = 0; index < data.length; index++) {
         for (let index2 = 0; index2 < word.length; index2++) {
-            if (word[index2].startsWith(data[index])) {
+            if (data[index].includes(word[index2])) {
                 Swear = word[index2]
                 return { isSwear: true, Swear: Swear }
             }
