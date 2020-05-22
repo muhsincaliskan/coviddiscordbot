@@ -85,6 +85,7 @@ bot.on('message', message => {
                 message.channel.send("Not implemented yet.")
              }
             else {
+                command=args.join(" ")
                 let country=localizeCountry(command)
                 getcountry(message, country)
             }
