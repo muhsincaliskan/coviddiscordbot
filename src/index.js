@@ -31,14 +31,16 @@ const prefix="cov"
 // const lineRenderer = new CanvasRenderService(1200, 600, setup)
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
+    
     bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
     bot.user.setActivity('cov help',{type:'CUSTOM_STATUS'})
 })
 bot.on('message', message => {
+    message.content = message.content.toLowerCase()
     if (!message.content.startsWith(prefix) || message.author.bot) return
 
     setLocale(message.guild.id)
-    message.content = message.content.toLowerCase()
+   
     
     const args = message.content.slice(prefix.length).split(/ +/)
     args.shift()
@@ -194,7 +196,7 @@ function messageTemplate(data = "", help = false,sort=false) {
             embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
         }
         else if (data.state != undefined) {
-            embedMsg.author.name = "COVID-19"+localize.translate("Statistics for $[1]", data.state)
+            embedMsg.author.name = "COVID-19 "+localize.translate("Statistics for $[1]", data.state)
             embedMsg.fields.splice(2, 2)
         }
     }
