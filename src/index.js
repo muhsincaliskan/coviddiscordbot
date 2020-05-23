@@ -3,7 +3,15 @@
 const covid = require('novelcovid')
 // const { CanvasRenderService } = require('chartjs-node-canvas');
 const Discord = require("discord.js")
-const bot = new Discord.Client()
+const bot = new Discord.Client({
+	presence: {
+		status: "online",
+		activity: {
+			type: 'PLAYING', 
+			name: 'cov help', 
+			
+		}
+	}})
 
 import {localize,localizeCountry} from "../translations/translate.js"
 var Filter = require('bad-words')
@@ -31,9 +39,7 @@ const prefix="cov"
 // const lineRenderer = new CanvasRenderService(1200, 600, setup)
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
-    
-    bot.user.setPresence({ game: { name: 'COVID-19' }, status: 'online' })
-    bot.user.setActivity('cov help',{type:'CUSTOM_STATUS'})
+    console.log("Bot is running...")
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
@@ -41,7 +47,6 @@ bot.on('message', message => {
 
     setLocale(message.guild.id)
    
-    
     const args = message.content.slice(prefix.length).split(/ +/)
     args.shift()
     var command=args.join(" ")
