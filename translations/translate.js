@@ -5,9 +5,10 @@ countries.registerLocale(require("i18n-iso-countries/langs/tr.json"));
 const localize=new Localize("./translations/")
 function localizeCountry(country) {
     const aliasofABD_tr=["amerika birleşik devletleri","amerika","amerika birleşik","amerika birleşik devleti"]
+    const allAliases=["all","global"]
     if (aliasofABD_tr.includes(country)) 
         return "USA"
-    if(countries.isValid(country)) 
+    if(countries.isValid(country)||allAliases.includes(country))
         return country
     else{
         if(country.charAt(0)=="i")

@@ -1,7 +1,6 @@
 // require("dotenv").config()
-
 const covid = require('novelcovid')
-// const { CanvasRenderService } = require('chartjs-node-canvas');
+const { CanvasRenderService } = require('chartjs-node-canvas');
 const Discord = require("discord.js")
 const bot = new Discord.Client({
 	presence: {
@@ -18,25 +17,25 @@ var Filter = require('bad-words')
 var filter = new Filter();
 
 const prefix="cov"
-// const setup = (ChartJS) => {
-//     ChartJS.defaults.global.defaultFontColor='#fff'
-//     ChartJS.defaults.global.defaultFontStyle='bold'
-//     ChartJS.defaults.global.defaultFontFamily='Helvetica Neue, Helvetica, Arial, sans-serif'
-//     ChartJS.plugins.register({
-//       beforeInit: function(chart){
-//         chart.legend.afterFit = function() { this.height += 35 }
-//       },
-//       beforeDraw: (chart) => {
-//         const ctx = chart.ctx;
-//         ctx.save();
-//         ctx.fillStyle = '#2F3136';
-//         ctx.fillRect(0, 0, chart.width, chart.height);
-//         ctx.restore();
-//       }
-//     })
-//   }
+const setup = (ChartJS) => {
+    ChartJS.defaults.global.defaultFontColor='#fff'
+    ChartJS.defaults.global.defaultFontStyle='bold'
+    ChartJS.defaults.global.defaultFontFamily='Helvetica Neue, Helvetica, Arial, sans-serif'
+    ChartJS.plugins.register({
+      beforeInit: function(chart){
+        chart.legend.afterFit = function() { this.height += 35 }
+      },
+      beforeDraw: (chart) => {
+        const ctx = chart.ctx;
+        ctx.save();
+        ctx.fillStyle = '#2F3136';
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+      }
+    })
+  }
     
-// const lineRenderer = new CanvasRenderService(1200, 600, setup)
+const lineRenderer = new CanvasRenderService(1200, 600, setup)
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     console.log("Bot is running...")
@@ -76,7 +75,7 @@ bot.on('message', message => {
                 getall(message)
             }
             else if (command == "help") {
-                message.channel.send({ embed: messageTemplate("",true) })
+                message.channel.send({ embed: messageTemplate("", {help:true}) })
             }
             else if (command.indexOf("state")>-1&&args.length>1) {
                 command=args.slice(1).join(" ")
@@ -84,8 +83,7 @@ bot.on('message', message => {
             }
             else if (command.indexOf("graph")>-1&&args.length>1) {
                 command=args.slice(1).join(" ")
-                // graph(message,command)
-                message.channel.send("Not implemented yet.")
+                graph(message,localizeCountry(command))
              }
             else {
                 let country=localizeCountry(command)
@@ -127,7 +125,7 @@ async function getsorted(message) {
     top10Case=top10Case.join("\n")
     top10Deaths=top10Deaths.join("\n")
     top10Recovered=top10Recovered.join("\n")
-    message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},false,true) })
+    message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},{sort:true}) })
 }
 async function getState(message, command) {
     let states = await covid.states({state:command}) 
@@ -135,14 +133,78 @@ async function getState(message, command) {
         return message.channel.send(states.message + "\nYou can try ISO code or enter `cov help` for commands");
     return message.channel.send({ embed: messageTemplate(states) })
 }
-// async function graph(){
-//     let graphData = ['global', 'all'].includes(args[0].toLowerCase()) ? {timeline: await api.historical.all({days: -1})} : await api.historical.countries({ country: args[0], days: -1 })
-
+async function graph(message,command){
+    let graphData
+    console.log(command)
+    if (["all","global"].includes(command))
+        graphData={timeline:await covid.historical.all({days:-1})}
+    else
+        graphData=await covid.historical.countries({country:command,days:-1})
+    if (graphData.message)
+        return message.channel.send(graphData.message + "\nYou can try ISO code.");   
+    // console.log ((Object.values(graphData.timeline.cases)-(Object.values(graphData.timeline.recovered))-(Object.values(graphData.timeline.deaths))))
+    const config={
+        type:"line",
+        data:{
+            labels:Object.keys(graphData.timeline.cases),
+            datasets:[{
+                label:localize.translate("Cases"),
+                data:Object.values(graphData.timeline.cases),
+                backgroundColor: 'rgba(255,198,151, 0.5)',
+                pointBackgroundColor:'rgba(237, 163, 101,1)',
+                pointRadius: 4,
+            },
+            {
+                label:localize.translate("Deaths"),
+                data:Object.values(graphData.timeline.deaths),
+                backgroundColor:  'rgba(213, 65, 65, 0.8)',
+                pointBackgroundColor:'rgba(213, 65, 65,1)',
+                pointRadius: 4,
+            },
+            {
+                label:localize.translate("Recovered"),
+                data:Object.values(graphData.timeline.recovered),
+                backgroundColor:  'rgba(52, 171, 52,0.5)',
+                pointBackgroundColor:'rgba(125, 211, 125,1)',
+                pointRadius: 4,
+            },
+            // {
+            //     label:localize.translate("Active"),
+            //     data:Object.values(graphData.timeline.recovered),
+            //     backgroundColor:  'rgba(81,189, 81, 0.4)'
+            // }
+            ]         
+        },
+        options: {
+            legend:{
+                labels:{ usePointStyle: true,fontSize:25}
+                
+            },
+            scales: {
+                yAxes:[{
+                    ticks: {
+                    fontSize: 25,
+                    
+                   
+                }}],
+                xAxes:[{
+                    
+                    ticks: {
+                        fontSize: 25,
+                        beginAtZero: false,
+                       
+                    }
+                }]
+            }
+        }
+    }
     
-    
-// }
+    const image = await lineRenderer.renderToBuffer(config);
+    return message.channel.send({ embed: messageTemplate(graphData.country,{graph:true,Img:image}) })
+   
+}
 
-function messageTemplate(data = "", help = false,sort=false) {
+function messageTemplate(data = "",options={help:false,sort:false,graph:false}) {
     const embedMsg = {
         color: 0x0099ff,
         author: {
@@ -154,9 +216,11 @@ function messageTemplate(data = "", help = false,sort=false) {
             url: "",
         },
         fields: [],
+        files:"",
+        image:{url:""},
         footer: { text: localize.translate("$[1] for commands","`cov help`") }
     };
-    if (help) {
+    if (options.help) {
         embedMsg.author.name = localize.translate("Commands")          
         embedMsg.fields=
         [
@@ -164,19 +228,27 @@ function messageTemplate(data = "", help = false,sort=false) {
             {name:localize.translate("Country"),value:"`cov country name||iso2||iso3>`\nEx: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
             {name:localize.translate("Leaderboard"),value:"`cov top`, `cov leaderboard`\n"+localize.translate("shows Top 10 cases,death and recovered stats"),inline:true},
             {name:localize.translate("US State"),value:"`cov state <state name>`\n Ex: `cov state new york`",inline:true},
-            {name:localize.translate("Graph"),value:"`cov graph all`, `cov graph<country name||iso2||iso3>`\n"+localize.translate("Not implemented yet."),inline:true},
+            {name:localize.translate("Graph"),value:"`cov graph all||global`, `cov graph <country name||iso2||iso3>`\nEx:"+`cov graph all`+"\n"+localize.translate("Not implemented yet."),inline:true},
             {name:localize.translate("Commands"),value:"`cov help`\n"+localize.translate("shows all commands"),inline:true},
             {name:localize.translate("Developer"),value:"killerbean#8689",inline:true},
             {name:localize.translate("Invite"),value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
             {name:"API", value:"[NovelCOVID](https://github.com/NovelCOVID/node-api)",inline:true}]
     }
-    else if (sort) {
+    else if (options.sort) {
         embedMsg.author.name = "COVID-19 "+localize.translate("Leaderboard")
         embedMsg.fields=[
             {name: localize.translate("Top 10 Cases"),value: data.top10Case,inline: true},
             {name: localize.translate('Top 10 Deaths'),value: data.top10Deaths,inline: true,},
             {name: localize.translate('Top 10 Recovered'),value: data.top10Recovered,inline: true}
         ]
+    }
+    else if(options.graph==true){
+        embedMsg.author.name= `COVID-19 ${(data=="")?"Global":data} Timeline`
+            if (options.Img) {
+                embedMsg.files=[new Discord.MessageAttachment(options.Img, 'graph.png')]
+                embedMsg.image.url="attachment://graph.png"
+            }
+            
     }
     else {
         embedMsg.fields =[
