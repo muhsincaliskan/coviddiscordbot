@@ -1,1 +1,1 @@
-worker: node -r esm ./src/index.js
+worker: npm start

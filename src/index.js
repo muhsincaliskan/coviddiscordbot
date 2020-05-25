@@ -60,7 +60,7 @@ bot.on('message', message => {
         var isSwear = filter.isProfane(command)
         if (isSwear) {
             console.log(command + " deleted")
-            message.delete()
+            // message.delete()
             return
             // 
             //this is for trolling :D--------------------------------
