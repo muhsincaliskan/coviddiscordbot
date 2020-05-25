@@ -47,9 +47,10 @@ bot.on('message', message => {
     setLocale(message.guild.id)
    
     const args = message.content.slice(prefix.length).split(/ +/)
-    args.shift()
+    const pre =args.shift()
     var command=args.join(" ")
-    console.log("Command: "+command)
+    console.log("Command:"+pre+" "+command)
+    if (pre!="") return
     if (!args.length) getall(message)
     else {
         var isSwear = filter.isProfane(command)
