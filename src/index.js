@@ -15,6 +15,10 @@ const bot = new Discord.Client({
 import {localize,localizeCountry} from "../translations/translate.js"
 var Filter = require('bad-words')
 var filter = new Filter();
+const fs = require("fs")
+let raw = fs.readFileSync("./filter.json")
+let badWordsList = JSON.parse(raw)
+filter.addWords(...badWordsList)
 
 const prefix="cov"
 const setup = (ChartJS) => {
@@ -56,8 +60,9 @@ bot.on('message', message => {
         var isSwear = filter.isProfane(command)
         if (isSwear) {
             console.log(command + " deleted")
+            message.delete()
             return
-            // message.delete()
+            // 
             //this is for trolling :D--------------------------------
             // if (swearCounter > 6 && swearCounter < 15) {
             //     var indexofReaction = Math.floor((Math.random() * swearReaction.length) + 0)
