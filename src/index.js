@@ -43,6 +43,8 @@ const lineRenderer = new CanvasRenderService(1200, 600, setup)
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     console.log("Bot is running...")
+    startTimer()
+    console.log("Timer Started")
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
@@ -53,7 +55,9 @@ bot.on('message', message => {
     const args = message.content.slice(prefix.length).split(/ +/)
     const pre =args.shift()
     var command=args.join(" ")
-    console.log("Command:"+pre+" "+command)
+    console.log("Command: "+pre+" "+`${command==""?"cov":command}`)
+    console.log("   Author Tag: "+message.author.tag)
+    console.log("   Author ID: "+message.author.id)
     if (pre!="") return
     if (!args.length) getall(message)
     else {
@@ -104,6 +108,41 @@ function setLocale(id){
     }
     else
         localize.setLocale("en");
+}
+async function setCountryTimer(){
+    var channel= bot.channels.resolve('700698868110852096')
+    const data=await covid.countries({country:"tr"})
+    // var updated=new Date()
+    // updated=updated.getHours()+" : "+updated.getMinutes()
+    // console.log(updated)
+    if (data.todayCases>0) {
+        channel.send({embed:messageTemplate(data)});
+        stopTimer()
+        console.log("Message Sended")
+        startTimer()
+    } 
+    else{
+        setTimeout(setCountryTimer,MIN_INTERVAL)
+    }
+}
+
+function startTimer(){
+    
+    var now=new Date()
+    now.setUTCHours((now.getUTCHours()+3))
+    // console.log(now.toUTCString())
+    var mins=now.getUTCMinutes()
+    var datestring=now.getUTCHours()+":"+`${(mins<=10)?"0"+mins:mins}`
+   
+    if (datestring=="18:00") {
+        setTimeout(setCountryTimer,MIN_INTERVAL)
+        console.log("Scheduled Script Called")
+    }
+    else
+        setTimeout(startTimer,MIN_INTERVAL)
+}
+function stopTimer() {
+    clearTimeout()
 }
 async function getall(message) {
     let all = await covid.all()
