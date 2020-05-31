@@ -133,8 +133,8 @@ function startTimer(){
     now.setUTCHours((now.getUTCHours()+3))
     // console.log(now.toUTCString())
     var mins=now.getUTCMinutes()
-    var datestring=now.getUTCHours()+":"+`${(mins<=10)?"0"+mins:mins}`
-    console.log(datestring)
+    var datestring=now.getUTCHours()+":"+`${(mins<10)?"0"+mins:mins}`
+   
     if (datestring=="18:00") {
         setTimeout(setCountryTimer,MIN_INTERVAL)
         console.log("Scheduled Script Called")
