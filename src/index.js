@@ -134,7 +134,7 @@ function startTimer(){
     // console.log(now.toUTCString())
     var mins=now.getUTCMinutes()
     var datestring=now.getUTCHours()+":"+`${(mins<=10)?"0"+mins:mins}`
-   
+    console.log(datestring)
     if (datestring=="18:00") {
         setTimeout(setCountryTimer,MIN_INTERVAL)
         console.log("Scheduled Script Called")
@@ -181,14 +181,14 @@ async function getState(message, command) {
 }
 async function graph(message,command){
     let graphData
-    console.log(command)
     if (["all","global"].includes(command))
         graphData={timeline:await covid.historical.all({days:-1})}
     else
         graphData=await covid.historical.countries({country:command,days:-1})
     if (graphData.message)
         return message.channel.send(graphData.message + "\nYou can try ISO code.");   
-    // console.log ((Object.values(graphData.timeline.cases)-(Object.values(graphData.timeline.recovered))-(Object.values(graphData.timeline.deaths))))
+    
+    const activeCases=Object.keys(graphData.timeline.cases).map(value=>graphData.timeline.cases[value]-graphData.timeline.recovered[value]-graphData.timeline.deaths[value])
     const config={
         type:"line",
         data:{
@@ -214,11 +214,13 @@ async function graph(message,command){
                 pointBackgroundColor:'rgba(125, 211, 125,1)',
                 pointRadius: 4,
             },
-            // {
-            //     label:localize.translate("Active"),
-            //     data:Object.values(graphData.timeline.recovered),
-            //     backgroundColor:  'rgba(81,189, 81, 0.4)'
-            // }
+            {
+                label:localize.translate("Active"),
+                data:activeCases,
+                backgroundColor:  'rgba(99, 167, 167, 0.8)',
+                pointBackgroundColor:'rgba(99, 167, 167,1)',
+                pointRadius: 4,
+            }
             ]         
         },
         options: {
