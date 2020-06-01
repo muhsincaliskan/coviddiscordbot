@@ -111,7 +111,7 @@ function setLocale(id){
         localize.setLocale("en");
 }
 async function setCountryTimer(){
-    var channel= bot.channels.resolve('700698868110852096')
+    var channel= bot.channels.resolve('671048646774489131')
     const data=await covid.countries({country:"tr"})
     // var updated=new Date()
     // updated=updated.getHours()+" : "+updated.getMinutes()
