@@ -152,7 +152,7 @@ async function getall(message) {
 async function getcountry(message, command) {
     let specificCountry = await covid.countries({country:command})
     if (specificCountry.message) 
-       return message.channel.send(specificCountry.message + "\nYou can try ISO code or enter `cov help` for commands");
+       return message.channel.send(localize.translate(specificCountry.message) +"\n"+localize.translate("You can try ISO code or enter `cov help` for commands"));
     return message.channel.send({ embed: messageTemplate(specificCountry) })
 }
 async function getsorted(message) {
@@ -176,7 +176,7 @@ async function getsorted(message) {
 async function getState(message, command) {
     let states = await covid.states({state:command}) 
     if (states.message) 
-        return message.channel.send(states.message + "\nYou can try ISO code or enter `cov help` for commands");
+        return message.channel.send(localize.translate(states.message) +"\n"+localize.translate("You can try ISO code or enter `cov help` for commands"))
     return message.channel.send({ embed: messageTemplate(states) })
 }
 async function graph(message,command){

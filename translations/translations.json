@@ -19,7 +19,7 @@
     "Top 10 Cases":{"tr":"İlk 10 Vaka Sayıları"},
     "Top 10 Deaths":{"tr":"İlk 10 Ölüm Sayıları"},
     "Top 10 Recovered":{"tr":"İlk 10 İyileşen Sayıları"},
-    "You can try ISO code!":{"tr":"ISO kodunu deneyebilirsin!"},
+    "You can try ISO code or enter `cov help` for commands":{"tr":"ISO kodunu deneyebilirsin veya \n`cov help` yazarak komutları öğrenebilirsin"},
     "State not found. Please provide valid state!":{"tr":"Eyalet Bulunamadı. Lütfen geçerli bir eyalet giriniz"},
     "Country not found or doesn't have any cases":{"tr":"Ülke bulunamadı veye henüz herhangi bir vaka yok"},
     "$[1] for commands":{"tr":"Komutlar için $[1]"},
