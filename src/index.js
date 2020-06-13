@@ -51,7 +51,8 @@ bot.on('message', message => {
     message.content = message.content.toLowerCase()
     if (!message.content.startsWith(prefix) || message.author.bot) return
 
-    setLocale(message.guild.id)
+    if(message.guild!=null)
+        setLocale(message.guild.id)
    
     const args = message.content.slice(prefix.length).split(/ +/)
     const pre =args.shift()
