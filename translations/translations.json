@@ -4,7 +4,7 @@
     "Recovered":{"tr":"İyileşen Sayısı"},
     "Active":{"tr":"Aktif Vakalar"},
     "Critical":{"tr":"Kritik Vakalar"},
-    "Tests":{"tr":"Test\nSayısı"},
+    "Tests":{"tr":"Test Sayısı"},
     "Cases Today":{"tr":"Bugünkü Vakalar"},
     "Deaths Today":{"tr":"Bugünkü Ölümler"},
     "Total Data for $[1] countries":{"tr":"$[1] Ülke İçin Toplam Veriler"},
