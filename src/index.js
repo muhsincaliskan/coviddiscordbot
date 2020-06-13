@@ -302,9 +302,9 @@ function messageTemplate(data = "",options={help:false,sort:false,graph:false}) 
         embedMsg.fields =[
             {name: localize.translate("Cases"),value: data.cases.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Active'),value: data.active.toLocaleString('en-US'),inline: true},
+            {name: localize.translate('Deaths'),value: data.deaths.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Recovered'),value: "",inline: true},
             {name: localize.translate('Critical'),value: "",inline: true},
-            {name: localize.translate('Deaths'),value: data.deaths.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Tests'),value: data.tests.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Cases Today'),value: data.todayCases.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Deaths Today'),value: data.todayDeaths.toLocaleString('en-US'),inline: true}
