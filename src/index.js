@@ -312,13 +312,13 @@ function messageTemplate(data = "",options={help:false,sort:false,graph:false}) 
         if (data.country != undefined) {
             embedMsg.thumbnail.url = data.countryInfo.flag
             embedMsg.author.name = "COVID-19 "+localize.translate("Statistics for $[1]($[2])",data.country,data.countryInfo.iso2) 
-            embedMsg.fields[2].value=data.recovered.toLocaleString('en-US')
-            embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
+            embedMsg.fields[3].value=data.recovered.toLocaleString('en-US')
+            embedMsg.fields[4].value=data.critical.toLocaleString('en-US')
         }
         else if (data.country == undefined && data.state == undefined) {
             embedMsg.author.name ="COVID-19 "+localize.translate("Total Data for $[1] countries",data.affectedCountries)
-            embedMsg.fields[2].value=data.recovered.toLocaleString('en-US')
-            embedMsg.fields[3].value=data.critical.toLocaleString('en-US')
+            embedMsg.fields[3].value=data.recovered.toLocaleString('en-US')
+            embedMsg.fields[4].value=data.critical.toLocaleString('en-US')
         }
         else if (data.state != undefined) {
             embedMsg.author.name = "COVID-19 "+localize.translate("Statistics for $[1]", data.state)
