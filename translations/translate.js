@@ -7,6 +7,7 @@ function localizeCountry(country) {
     const aliasofABD_tr=["amerika birleşik devletleri","amerika","amerika birleşik","amerika birleşik devleti"]
     const aliasofGB_tr=["ingiltere"]
     const allAliases=["all","global"]
+   
     if (aliasofABD_tr.includes(country)) 
         return "USA"
     if(aliasofGB_tr.includes(country))

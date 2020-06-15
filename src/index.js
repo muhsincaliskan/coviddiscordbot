@@ -83,7 +83,7 @@ bot.on('message', message => {
             if (command == "top" || command == "leaderboard") {
                 getsorted(message)
             }
-            else if (command == "all") {
+            else if (["all","global","world"].includes(command)) {
                 getall(message)
             }
             else if (command == "help") {
@@ -273,11 +273,11 @@ function messageTemplate(data = "",options={help:false,sort:false,graph:false}) 
         embedMsg.author.name = localize.translate("Commands")          
         embedMsg.fields=
         [
-            {name:localize.translate("Total Data"),value:"`cov` or `cov all`\n"+localize.translate("shows global COVID-19 Stats"),inline:true},
+            {name:localize.translate("Total Data"),value:"`cov` or `cov all||global||world`\n"+localize.translate("shows global COVID-19 Stats"),inline:true},
             {name:localize.translate("Country"),value:"`cov country name||iso2||iso3>`\nEx: `cov Turkey`, `cov tr`, `cov tur`",inline:true},
             {name:localize.translate("Leaderboard"),value:"`cov top`, `cov leaderboard`\n"+localize.translate("shows Top 10 cases,death and recovered stats"),inline:true},
             {name:localize.translate("US State"),value:"`cov state <state name>`\n Ex: `cov state new york`",inline:true},
-            {name:localize.translate("Graph"),value:"`cov graph all||global`, `cov graph <country name||iso2||iso3>`\nEx: "+"`cov graph all`,`cov graph tr`"+"\n",inline:true},
+            {name:localize.translate("Graph"),value:"`cov graph all||global||world`\n `cov graph <country name||iso2||iso3>`\nEx: "+"`cov graph all`,`cov graph tr`"+"\n",inline:true},
             {name:localize.translate("Commands"),value:"`cov help`\n"+localize.translate("shows all commands"),inline:true},
             {name:localize.translate("Developer"),value:"killerbean#8689",inline:true},
             {name:localize.translate("Invite"),value:"[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)",inline:true},
