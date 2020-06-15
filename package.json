@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "COVID-19 discord bot",
   "main": "./src/index.js",
-  "engines": {"node": "12.x","npm":"6.14.4"},
-
+  "engines": {
+    "node": "12.x",
+    "npm": "6.14.4"
+  },
   "scripts": {
     "start": "node -r esm ./src/index.js",
     "dev": "nodemon -r esm ./src/index.js",
@@ -31,6 +33,6 @@
     "esm": "^3.2.25",
     "i18n-iso-countries": "^5.4.0",
     "localize": "^0.4.7",
-    "novelcovid": "^2.1.1"
+    "novelcovid": "^2.2.0"
   }
 }
