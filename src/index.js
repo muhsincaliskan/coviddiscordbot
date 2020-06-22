@@ -323,7 +323,7 @@ function messageTemplate(data = "",options={help:false,sort:false,graph:false}) 
         }
         else if (data.state != undefined) {
             embedMsg.author.name = "COVID-19 "+localize.translate("Statistics for $[1]", data.state)
-            embedMsg.fields.splice(2, 2)
+            embedMsg.fields.splice(3, 2)
         }
     }
     return embedMsg
