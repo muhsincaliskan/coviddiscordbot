@@ -1,4 +1,5 @@
-// require("dotenv").config()
+require("dotenv").config()
+
 const covid = require('novelcovid')
 const { CanvasRenderService } = require('chartjs-node-canvas');
 const Discord = require("discord.js")
@@ -328,4 +329,5 @@ function messageTemplate(data = "",options={help:false,sort:false,graph:false}) 
     }
     return embedMsg
 }
-bot.login("NzAwNjkzMjMwMDkzNTk4NzMw.Xpmrmg.iMWsVpOY20H31yfhLE0o4nXJV2k")
+// bot.login("NzAwNjkzMjMwMDkzNTk4NzMw.Xpmrmg.iMWsVpOY20H31yfhLE0o4nXJV2k")
+bot.login(process.env.TOKEN)
