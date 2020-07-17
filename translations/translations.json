@@ -7,6 +7,7 @@
     "Tests":{"tr":"Test Sayısı"},
     "Cases Today":{"tr":"Bugünkü Vakalar"},
     "Deaths Today":{"tr":"Bugünkü Ölümler"},
+    "Recovered Today":{"tr":"Bugünkü İyileşenler"},
     "Total Data for $[1] countries":{"tr":"$[1] Ülke İçin Toplam Veriler"},
     "Total Data":{"tr":"Tüm Veriler"},
     "Country":{"tr":"Ülke"},

@@ -305,26 +305,30 @@ function messageTemplate(data = "",options={help:false,sort:false,graph:false}) 
             {name: localize.translate("Cases"),value: data.cases.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Active'),value: data.active.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Deaths'),value: data.deaths.toLocaleString('en-US'),inline: true},
-            {name: localize.translate('Recovered'),value: "",inline: true},
-            {name: localize.translate('Critical'),value: "",inline: true},
+            {name: localize.translate('Recovered'),value: "no_data",inline: true},
+            {name: localize.translate('Critical'),value: "no_data",inline: true},
             {name: localize.translate('Tests'),value: data.tests.toLocaleString('en-US'),inline: true},
             {name: localize.translate('Cases Today'),value: data.todayCases.toLocaleString('en-US'),inline: true},
-            {name: localize.translate('Deaths Today'),value: data.todayDeaths.toLocaleString('en-US'),inline: true}
+            {name: localize.translate('Deaths Today'),value: data.todayDeaths.toLocaleString('en-US'),inline: true},
+            {name: localize.translate('Recovered Today'),value: "no_data",inline: true}
         ]
         if (data.country != undefined) {
             embedMsg.thumbnail.url = data.countryInfo.flag
             embedMsg.author.name = "COVID-19 "+localize.translate("Statistics for $[1]($[2])",data.country,data.countryInfo.iso2) 
             embedMsg.fields[3].value=data.recovered.toLocaleString('en-US')
             embedMsg.fields[4].value=data.critical.toLocaleString('en-US')
+            embedMsg.fields[8].value=data.todayRecovered.toLocaleString('en-US')
         }
         else if (data.country == undefined && data.state == undefined) {
             embedMsg.author.name ="COVID-19 "+localize.translate("Total Data for $[1] countries",data.affectedCountries)
             embedMsg.fields[3].value=data.recovered.toLocaleString('en-US')
             embedMsg.fields[4].value=data.critical.toLocaleString('en-US')
+            embedMsg.fields[8].value=data.todayRecovered.toLocaleString('en-US')
         }
         else if (data.state != undefined) {
             embedMsg.author.name = "COVID-19 "+localize.translate("Statistics for $[1]", data.state)
             embedMsg.fields.splice(3, 2)
+            embedMsg.fields.pop()
         }
     }
     return embedMsg
