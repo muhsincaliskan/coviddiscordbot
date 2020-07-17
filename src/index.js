@@ -149,7 +149,7 @@ function stopTimer() {
 }
 async function getall(message) {
     let all = await covid.all()
-    message.channel.send({ embed: messageTemplate(all) })
+    return message.channel.send({ embed: messageTemplate(all) })
 }
 async function getcountry(message, command) {
     let specificCountry = await covid.countries({country:command})
@@ -173,7 +173,7 @@ async function getsorted(message) {
     top10Case=top10Case.join("\n")
     top10Deaths=top10Deaths.join("\n")
     top10Recovered=top10Recovered.join("\n")
-    message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},{sort:true}) })
+    return message.channel.send({ embed: messageTemplate({top10Case,top10Deaths,top10Recovered},{sort:true}) })
 }
 async function getState(message, command) {
     let states = await covid.states({state:command}) 
