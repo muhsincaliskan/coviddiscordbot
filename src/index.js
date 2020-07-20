@@ -299,7 +299,7 @@ ${localize.translate("$[1] to invite your server", "`cov invite`")}`
         embedMsg.fields =
             [
                 { name: localize.translate("Total Data"), value: "`cov\n{all|global|world}`\n" + localize.translate("shows global COVID-19 Stats"), inline: true },
-                { name: localize.translate("Country"), value: "`cov country`\n`{country|iso2|iso3}`\nEx: `cov Turkey`, `cov tr`, `cov tur`", inline: true },
+                { name: localize.translate("Country"), value: "`cov {country|iso2|iso3}`\nEx: `cov Turkey`, `cov tr`, `cov tur`", inline: true },
                 { name: localize.translate("Leaderboard"), value: "`cov top`\n`cov leaderboard`\n" + localize.translate("shows Top 10 cases,death and recovered stats"), inline: true },
                 { name: localize.translate("US State"), value: "`cov state {state name}`\n"+localize.translate( "shows COVID-19 stats for specific US State")+"\nEx: `cov state new york`", inline: true },
                 { name: localize.translate("Graph"), value: "`cov graph {all|global|world}`\n`cov graph {country|iso2|iso3}`\nEx: " + "`cov graph all`,`cov graph tr`" + "\n", inline: true },
