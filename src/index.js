@@ -156,6 +156,7 @@ function stopTimer() {
     clearTimeout()
 }
 async function sysInfo(message) {
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
     const embedMsg = {
         color: 0x0099ff,
         author: {
@@ -168,7 +169,7 @@ async function sysInfo(message) {
             { name: "Discord.js", value: "v"+Discord.version, inline: true },
             { name: "Node.js", value: process.version, inline: true },
             // { name: "CPU", value: process.cpuUsage().system, inline: true },
-            // { name: "Memory", value: process.memoryUsage().arrayBuffers, inline: true },
+            { name: "Memory", value: Math.round(used * 100) / 100 +" MB", inline: true },
             // { name: "Uptime", value: bot.uptime, inline: true },
 
             
