@@ -33,6 +33,8 @@
     "esm": "^3.2.25",
     "i18n-iso-countries": "^5.5.0",
     "localize": "^0.4.7",
-    "novelcovid": "^3.0.0"
+    "novelcovid": "^3.0.0",
+    "sequelize": "^6.3.3",
+    "sqlite3": "^5.0.0"
   }
 }

@@ -15,6 +15,7 @@ const bot = new Discord.Client({
 })
 
 import { localize, localizeCountry } from "../translations/translate.js"
+import { info } from "console";
 var Filter = require('bad-words')
 var filter = new Filter();
 const fs = require("fs")
@@ -102,6 +103,9 @@ bot.on('message',  message => {
             else if (command == "invite") {
                 invite(message)
             }
+            else if (command == "sys") {
+                sysInfo(message)
+            }
             else {
                 let country = localizeCountry(command)
                 getcountry(message, country)
@@ -151,7 +155,32 @@ function startTimer() {
 function stopTimer() {
     clearTimeout()
 }
-function invite(message) {
+async function sysInfo(message) {
+    const embedMsg = {
+        color: 0x0099ff,
+        author: {
+            name: 'COVID -19 by killerbean#8689',
+            icon_url: 'https://cdn.discordapp.com/avatars/451506381736902656/937b1075d9942fc7d7ef599dfd604230.png?size=256',
+        },
+        title: `Statistics`,
+        fields:[
+            { name:"Ping", value: Math.round(bot.ws.ping)+" ms", inline: true },
+            { name: "Discord.js", value: "v"+Discord.version, inline: true },
+            { name: "Node.js", value: process.version, inline: true },
+            // { name: "CPU", value: process.cpuUsage().system, inline: true },
+            // { name: "Memory", value: process.memoryUsage().arrayBuffers, inline: true },
+            // { name: "Uptime", value: bot.uptime, inline: true },
+
+            
+        ],
+        footer: {
+            text: `${localize.translate("$[1] for commands", "`cov help`")}
+${localize.translate("$[1] to invite your server", "`cov invite`")}`
+        }
+    };
+    return await message.channel.send({ embed: embedMsg })
+}
+async function invite(message) {
     const embedMsg = {
         color: 0x0099ff,
         author: {
@@ -165,7 +194,7 @@ function invite(message) {
 ${localize.translate("$[1] to invite your server", "`cov invite`")}`
         }
     };
-    message.channel.send({ embed: embedMsg })
+    return await message.channel.send({ embed: embedMsg })
 }
 async function getall(message) {
     let all = await covid.all()
