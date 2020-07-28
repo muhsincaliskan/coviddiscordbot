@@ -15,7 +15,9 @@ const bot = new Discord.Client({
 })
 
 import { localize, localizeCountry } from "../translations/translate.js"
-import { info } from "console";
+import { sequelize, Guilds, addGuild, setLanguage, getLanguage } from "../db/dbHelper.js"
+
+// import { info } from "console";
 var Filter = require('bad-words')
 var filter = new Filter();
 const fs = require("fs")
@@ -49,14 +51,16 @@ bot.on('ready', () => {
     console.log("Bot is running...")
     startTimer()
     console.log("Timer Started")
+    Guilds.sync()
 })
-bot.on('message',  message => {
+bot.on('message', message => {
     message.content = message.content.toLowerCase()
     if (!message.content.startsWith(prefix) || message.author.bot) return
 
     if (message.guild != null)
         setLocale(message.guild.id)
-
+    if (message.channel.type == "dm")
+        setLocale(message.channel.id)
     const args = message.content.slice(prefix.length).split(/ +/)
     const pre = args.shift()
     var command = args.join(" ")
@@ -100,6 +104,24 @@ bot.on('message',  message => {
                 command = args.slice(1).join(" ")
                 graph(message, localizeCountry(command))
             }
+            else if (command.indexOf("setlan") > -1 && args.length > 1) {
+                command = args.slice(1).join(" ")
+                console.log(command)
+                var guildname = ""
+                var id = ""
+                if (message.guild) {
+                    guildname = message.guild.name
+                    id = message.guild.id
+                }
+                else {
+                    guildname = message.author.tag
+                    id = message.channel.id
+                }
+                console.log(id)
+                addGuild(guildname.toString(), id.toString(), command)
+                setLanguage(id.toString(), command)
+                message.channel.send("Language: " + command)
+            }
             else if (command == "invite") {
                 invite(message)
             }
@@ -113,12 +135,15 @@ bot.on('message',  message => {
         }
     }
 })
-function setLocale(id) {
-    if (id == "700698867624181800" || id == "500855916296404992") {
-        localize.setLocale("tr")
-    }
-    else
-        localize.setLocale("en");
+async function setLocale(id) {
+    // if (id == "700698867624181800" || id == "500855916296404992") {
+    //     localize.setLocale("tr")
+    // }
+    // else
+    //     localize.setLocale("en");
+    let tmp = await getLanguage(id)
+    console.log("--------------")
+    return localize.setLocale(tmp)
 }
 async function setCountryTimer() {
     var channel = bot.channels.resolve('671048646774489131')
@@ -164,15 +189,15 @@ async function sysInfo(message) {
             icon_url: 'https://cdn.discordapp.com/avatars/451506381736902656/937b1075d9942fc7d7ef599dfd604230.png?size=256',
         },
         title: `Statistics`,
-        fields:[
-            { name:"Ping", value: Math.round(bot.ws.ping)+" ms", inline: true },
-            { name: "Discord.js", value: "v"+Discord.version, inline: true },
+        fields: [
+            { name: "Ping", value: Math.round(bot.ws.ping) + " ms", inline: true },
+            { name: "Discord.js", value: "v" + Discord.version, inline: true },
             { name: "Node.js", value: process.version, inline: true },
             // { name: "CPU", value: process.cpuUsage().system, inline: true },
-            { name: "Memory", value: Math.round(used * 100) / 100 +" MB", inline: true },
+            { name: "Memory", value: Math.round(used * 100) / 100 + " MB", inline: true },
             // { name: "Uptime", value: bot.uptime, inline: true },
 
-            
+
         ],
         footer: {
             text: `${localize.translate("$[1] for commands", "`cov help`")}
@@ -331,12 +356,14 @@ ${localize.translate("$[1] to invite your server", "`cov invite`")}`
                 { name: localize.translate("Total Data"), value: "`cov\n{all|global|world}`\n" + localize.translate("shows global COVID-19 Stats"), inline: true },
                 { name: localize.translate("Country"), value: "`cov {country|iso2|iso3}`\nEx: `cov Turkey`, `cov tr`, `cov tur`", inline: true },
                 { name: localize.translate("Leaderboard"), value: "`cov top`\n`cov leaderboard`\n" + localize.translate("shows Top 10 cases,death and recovered stats"), inline: true },
-                { name: localize.translate("US State"), value: "`cov state {state name}`\n"+localize.translate( "shows COVID-19 stats for specific US State")+"\nEx: `cov state new york`", inline: true },
+                { name: localize.translate("US State"), value: "`cov state {state name}`\n" + localize.translate("shows COVID-19 stats for specific US State") + "\nEx: `cov state new york`", inline: true },
                 { name: localize.translate("Graph"), value: "`cov graph {all|global|world}`\n`cov graph {country|iso2|iso3}`\nEx: " + "`cov graph all`,`cov graph tr`" + "\n", inline: true },
+                { name: localize.translate("Language"), value: "`cov setlan en`\n`cov setlan tr`\n" + localize.translate("change language TR/EN. Default language is English"), inline: true },
                 { name: localize.translate("Commands"), value: "`cov help`\n" + localize.translate("shows all commands"), inline: true },
+                { name: localize.translate("System"), value: "`cov sys`\n" + localize.translate("shows system info such as Ping,Ram,Memory etc."), inline: true },
                 { name: localize.translate("Developer"), value: "killerbean#8689", inline: true },
                 { name: localize.translate("Invite"), value: "`cov invite`\n[COVID-19](https://discord.com/api/oauth2/authorize?client_id=700693230093598730&permissions=75776&scope=bot)", inline: true },
-                { name: "API", value: "[NovelCOVID](https://github.com/NovelCOVID/node-api)", inline: true }]
+                { name: "API", value: "To learn more info about API\n[NovelCOVID](https://github.com/NovelCOVID/node-api)", inline: true }]
     }
     else if (options.sort) {
         embedMsg.author.name = "COVID-19 " + localize.translate("Leaderboard")

@@ -19,7 +19,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 const Guilds = sequelize.define('guilds', {
     guild_name: {
         type: Sequelize.STRING,
-        unique: true,
+        // unique:true
     },
     guild_id: {
         type: Sequelize.TEXT,
@@ -28,7 +28,7 @@ const Guilds = sequelize.define('guilds', {
     language: {
         type: Sequelize.STRING,
         defaultValue: "en",
-        unique: true
+        // unique: true
     }
 });
 
@@ -41,11 +41,11 @@ async function addGuild(guildName, guildId, lang) {
             language: lang,
         });
         
-        return console.log(`Tag ${guild.guild_id} added.`);
+        return console.log(`Guild ${guild.guild_id} added.`)
     }
     catch (e) {
         if (e.name === 'SequelizeUniqueConstraintError') {
-            return console.log('That tag already exists.');
+            return console.log('That guild already exists.');
         }
        return console.log('Something went wrong with adding a tag.');
     }
@@ -57,11 +57,11 @@ if (guild) {
 	// equivalent to: UPDATE tags SET usage_count = usage_count + 1 WHERE name = 'tagName';
 	// guild.increment('usage_count');
     // console.log(guild.get('language'))
-    console.log(guild.get('guild_id')+ guild.get('guild_name')+" "+guild.get('language'));
+    console.log(guild.get('guild_id')+" "+ guild.get('guild_name')+" "+guild.get('language'));
     if (guild.get('language')==="en") return "en"
     else return "tr"
 }
-return console.log(`Could not find tag: ${tagName}`);
+return "en"
     
 }
 async function setLanguage(guildId,newLang) {
@@ -69,7 +69,7 @@ async function setLanguage(guildId,newLang) {
     // equivalent to: UPDATE tags (descrption) values (?) WHERE name='?';
     const affectedRows = await Guilds.update({ language: newLang }, { where: { guild_id: guildId } });
     if (affectedRows > 0) {
-       return console.log(`Language ${newLang} was edited.`);
+       return console.log(`New Language is ${newLang}`)
     }
    return console.log(`Could not find a with name ${newLang}.`);
 

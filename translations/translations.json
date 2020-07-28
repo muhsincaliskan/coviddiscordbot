@@ -18,6 +18,8 @@
     "Commands":{"tr":"Komutlar"},
     "Developer":{"tr":"Geliştirici"},
     "Invite":{"tr":"Davet"},
+    "Language":{"tr":"Dil"},
+    "System":{"tr":"Sistem"},
     "Top 10 Cases":{"tr":"İlk 10 Vaka Sayıları"},
     "Top 10 Deaths":{"tr":"İlk 10 Ölüm Sayıları"},
     "Top 10 Recovered":{"tr":"İlk 10 İyileşen Sayıları"},
@@ -33,5 +35,7 @@
     "country name":{"tr":"ülke ismi"},
     "Not implemented yet.":{"tr":"Yapım aşamasında.Çalışmıyor"},
     "Statistics for $[1]($[2])":{"tr":"$[1]($[2]) için veriler"},
-    "Statistics for $[1]":{"tr":"$[1] için veriler"}
+    "Statistics for $[1]":{"tr":"$[1] için veriler"},
+    "shows system info such as Ping,Ram,Memory etc.":{"tr":"ping,ram,bellek vs. gibi sistem bilgilerini gösterir."},
+    "change language TR/EN. Default language is English":{"tr":"Türkçe veya İngilizce dil seçimi yapar. Orjinal dil İngilizcedir!"}
 }
