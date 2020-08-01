@@ -25,7 +25,7 @@ let raw = fs.readFileSync("./filter.json")
 let badWordsList = JSON.parse(raw)
 filter.addWords(...badWordsList)
 
-const prefix = "!cov"
+const prefix = "cov"
 const MIN_INTERVAL = 1000 * 60
 const setup = (ChartJS) => {
     ChartJS.defaults.global.defaultFontColor = '#fff'
