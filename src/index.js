@@ -47,12 +47,18 @@ const setup = (ChartJS) => {
 
 const lineRenderer = new CanvasRenderService(1200, 600, setup)
 
-bot.once('ready', () => {
+bot.once('ready',async () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     console.log("Bot is running...")
     startTimer()
     console.log("Timer Started")
-    Guilds.sync()
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+      } catch (error) {
+        console.error('Unable to connect to the database:', error);
+      }
+    // Guilds.sync()
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
