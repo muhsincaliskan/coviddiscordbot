@@ -25,7 +25,7 @@ let raw = fs.readFileSync("./filter.json")
 let badWordsList = JSON.parse(raw)
 filter.addWords(...badWordsList)
 
-const prefix = "cov"
+const prefix = "!cov"
 const MIN_INTERVAL = 1000 * 60
 const setup = (ChartJS) => {
     ChartJS.defaults.global.defaultFontColor = '#fff'
@@ -46,7 +46,8 @@ const setup = (ChartJS) => {
 }
 
 const lineRenderer = new CanvasRenderService(1200, 600, setup)
-bot.on('ready', () => {
+
+bot.once('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     console.log("Bot is running...")
     startTimer()
@@ -120,7 +121,7 @@ bot.on('message', message => {
                 console.log(id)
                 addGuild(guildname.toString(), id.toString(), command)
                 setLanguage(id.toString(), command)
-                message.channel.send("Language: " + command)
+                message.channel.send("Language=> " + command)
             }
             else if (command == "invite") {
                 invite(message)
@@ -191,6 +192,7 @@ async function sysInfo(message) {
         title: `Statistics`,
         fields: [
             { name: "Ping", value: Math.round(bot.ws.ping) + " ms", inline: true },
+            { name: "Guilds", value:bot.guilds , inline: true },
             { name: "Discord.js", value: "v" + Discord.version, inline: true },
             { name: "Node.js", value: process.version, inline: true },
             // { name: "CPU", value: process.cpuUsage().system, inline: true },

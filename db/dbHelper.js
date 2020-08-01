@@ -58,7 +58,7 @@ if (guild) {
 	// guild.increment('usage_count');
     // console.log(guild.get('language'))
     console.log(guild.get('guild_id')+" "+ guild.get('guild_name')+" "+guild.get('language'));
-    if (guild.get('language')==="en") return "en"
+    if (guild.get('language')=="en") return "en"
     else return "tr"
 }
 return "en"
