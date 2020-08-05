@@ -1,11 +1,20 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('database', 'user', 'password', {
-    host: 'localhost',
-    dialect: 'sqlite',
+const connection_url="postgres://xjxvtofeynysqs:50093c33a672403fbe38530fbfafd55dd5d2832681bca448ab9fc0c1f228ae2c@ec2-54-211-210-149.compute-1.amazonaws.com:5432/dai6pbfsfnekc5"
+const sequelize = new Sequelize(connection_url, {
+    dialect:  'postgres',
+    protocol: 'postgres',
     logging: false,
+    port: process.env.PORT||3000,
+    host:'localhost',
+    dialectOptions:{
+        ssl: {
+            require: true,
+            rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+          }
+    }
     // SQLite only
-    storage: 'database.sqlite',
+    // storage: 'database.sqlite',
 });
 
 /*
@@ -14,7 +23,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
  * description TEXT,
  * username VARCHAR(255),
  * usage INT
- * );
+ * )
  */
 const Guilds = sequelize.define('guilds', {
     guild_name: {

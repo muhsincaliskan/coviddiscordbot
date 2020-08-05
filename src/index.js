@@ -58,7 +58,7 @@ bot.once('ready',async () => {
       } catch (error) {
         console.error('Unable to connect to the database:', error);
       }
-    // Guilds.sync()
+     Guilds.sync()
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
