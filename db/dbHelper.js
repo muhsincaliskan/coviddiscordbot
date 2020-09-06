@@ -10,13 +10,13 @@ const sequelize = new Sequelize(connection_url, {
     dialectOptions:{
         ssl: {
             require: true,
-            rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+            rejectUnauthorized: false 
           }
     }
     // SQLite only
     // storage: 'database.sqlite',
 });
-
+const default_language="en"
 /*
  * equivalent to: CREATE TABLE tags(
  * name VARCHAR(255),
@@ -40,7 +40,12 @@ const Guilds = sequelize.define('guilds', {
         // unique: true
     }
 });
-
+async function Validate(Name,ID){
+   var guildId=ID
+   var guildName=Name
+    if(checkID(guildId)==false)
+        addGuild(guildName,guildId,default_language)
+}
 async function addGuild(guildName, guildId, lang) {
     try {
         // equivalent to: INSERT INTO tags (name, description, username) values (?, ?, ?);
@@ -54,10 +59,19 @@ async function addGuild(guildName, guildId, lang) {
     }
     catch (e) {
         if (e.name === 'SequelizeUniqueConstraintError') {
-            return console.log('That guild already exists.');
+            return console.log('That Guild or Channel already exists.');
         }
-       return console.log('Something went wrong with adding a tag.');
+       return console.log('Something went wrong with adding a Guild or Channel.');
     }
+}
+async function checkID(guildId) {
+    const guild = await Guilds.findOne({ where: { guild_id: guildId } });
+if (guild) {
+    console.log("Guild or channel exists in database")
+    return true
+}
+console.log("Guild or channel does not exists in database")
+return false
 }
 async function getLanguage(guildId) {
 // equivalent to: SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
@@ -74,7 +88,6 @@ return "en"
     
 }
 async function setLanguage(guildId,newLang) {
-
     // equivalent to: UPDATE tags (descrption) values (?) WHERE name='?';
     const affectedRows = await Guilds.update({ language: newLang }, { where: { guild_id: guildId } });
     if (affectedRows > 0) {
@@ -84,4 +97,4 @@ async function setLanguage(guildId,newLang) {
 
 }
 
-export {sequelize,Guilds,addGuild,setLanguage,getLanguage}
+export {sequelize,Guilds,addGuild,setLanguage,getLanguage,Validate}

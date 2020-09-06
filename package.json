@@ -35,7 +35,6 @@
     "localize": "^0.4.7",
     "novelcovid": "^3.0.0",
     "pg": "^8.3.0",
-    "sequelize": "^6.3.3",
-    "sqlite3": "^5.0.0"
+    "sequelize": "^6.3.3"
   }
 }

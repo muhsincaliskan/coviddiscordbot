@@ -15,7 +15,7 @@ const bot = new Discord.Client({
 })
 
 import { localize, localizeCountry } from "../translations/translate.js"
-import { sequelize, Guilds, addGuild, setLanguage, getLanguage } from "../db/dbHelper.js"
+import { sequelize, Guilds, addGuild, setLanguage, getLanguage, Validate} from "../db/dbHelper.js"
 
 // import { info } from "console";
 var Filter = require('bad-words')
@@ -25,7 +25,7 @@ let raw = fs.readFileSync("./filter.json")
 let badWordsList = JSON.parse(raw)
 filter.addWords(...badWordsList)
 
-const prefix = "cov"
+const prefix = process.env.PREFIX
 const MIN_INTERVAL = 1000 * 60
 const setup = (ChartJS) => {
     ChartJS.defaults.global.defaultFontColor = '#fff'
@@ -47,7 +47,7 @@ const setup = (ChartJS) => {
 
 const lineRenderer = new CanvasRenderService(1200, 600, setup)
 
-bot.once('ready',async () => {
+bot.on('ready',async () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     console.log("Bot is running...")
     startTimer()
@@ -62,12 +62,19 @@ bot.once('ready',async () => {
 })
 bot.on('message', message => {
     message.content = message.content.toLowerCase()
+    var ID=""
     if (!message.content.startsWith(prefix) || message.author.bot) return
-
-    if (message.guild != null)
-        setLocale(message.guild.id)
-    if (message.channel.type == "dm")
-        setLocale(message.channel.id)
+   
+    if (message.guild != null){
+        ID=message.guild.id
+        Validate(message.guild.name,ID)
+        setLocale(ID)
+    }    
+    if (message.channel.type == "dm"){
+        ID=message.channel.id
+        Validate(message.author.tag,ID)
+        setLocale(ID)
+    }
     const args = message.content.slice(prefix.length).split(/ +/)
     const pre = args.shift()
     var command = args.join(" ")
@@ -75,7 +82,7 @@ bot.on('message', message => {
     console.log("-----Author Tag: " + message.author.tag)
     console.log("-----Author ID: " + message.author.id)
     if (pre != "") return
-    if (!args.length) getall(message)
+    if (!args.length) getAll(message)
     else {
         var isSwear = filter.isProfane(command)
         if (isSwear) {
@@ -94,12 +101,14 @@ bot.on('message', message => {
             // }//---------------------------------------------------------
         }
         else {
+            
             if (command == "top" || command == "leaderboard") {
-                getsorted(message)
+                getSorted(message)
             }
             else if (["all", "global", "world"].includes(command)) {
-                getall(message)
+                getAll(message)
             }
+            
             else if (command == "help") {
                 message.channel.send({ embed: messageTemplate("", { help: true }) })
             }
@@ -114,19 +123,7 @@ bot.on('message', message => {
             else if (command.indexOf("setlan") > -1 && args.length > 1) {
                 command = args.slice(1).join(" ")
                 console.log(command)
-                var guildname = ""
-                var id = ""
-                if (message.guild) {
-                    guildname = message.guild.name
-                    id = message.guild.id
-                }
-                else {
-                    guildname = message.author.tag
-                    id = message.channel.id
-                }
-                console.log(id)
-                addGuild(guildname.toString(), id.toString(), command)
-                setLanguage(id.toString(), command)
+                setLanguage(ID, command)
                 message.channel.send("Language=> " + command)
             }
             else if (command == "invite") {
@@ -135,19 +132,18 @@ bot.on('message', message => {
             else if (command == "sys") {
                 sysInfo(message)
             }
+            // else if (["aşı","vaccine"].includes(command)) {
+            //     getVaccine(message)
+            // }
             else {
                 let country = localizeCountry(command)
-                getcountry(message, country)
+                getCountry(message, country)
             }
         }
     }
 })
 async function setLocale(id) {
-    // if (id == "700698867624181800" || id == "500855916296404992") {
-    //     localize.setLocale("tr")
-    // }
-    // else
-    //     localize.setLocale("en");
+  
     let tmp = await getLanguage(id)
     console.log("--------------")
     return localize.setLocale(tmp)
@@ -188,24 +184,23 @@ function stopTimer() {
     clearTimeout()
 }
 async function sysInfo(message) {
-    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    
+    const used = process.memoryUsage().rss / 1024 / 1024;
     const embedMsg = {
         color: 0x0099ff,
         author: {
             name: 'COVID -19 by killerbean#8689',
             icon_url: 'https://cdn.discordapp.com/avatars/451506381736902656/937b1075d9942fc7d7ef599dfd604230.png?size=256',
         },
-        title: `Statistics`,
+        title: `System and Stats`,
         fields: [
             { name: "Ping", value: Math.round(bot.ws.ping) + " ms", inline: true },
-            { name: "Guilds", value:bot.guilds , inline: true },
+            { name: "Guilds", value:bot.guilds.cache.size , inline: true },
             { name: "Discord.js", value: "v" + Discord.version, inline: true },
             { name: "Node.js", value: process.version, inline: true },
             // { name: "CPU", value: process.cpuUsage().system, inline: true },
             { name: "Memory", value: Math.round(used * 100) / 100 + " MB", inline: true },
             // { name: "Uptime", value: bot.uptime, inline: true },
-
-
         ],
         footer: {
             text: `${localize.translate("$[1] for commands", "`cov help`")}
@@ -230,17 +225,18 @@ ${localize.translate("$[1] to invite your server", "`cov invite`")}`
     };
     return await message.channel.send({ embed: embedMsg })
 }
-async function getall(message) {
+async function getAll(message) {
     let all = await covid.all()
     return message.channel.send({ embed: messageTemplate(all) })
 }
-async function getcountry(message, command) {
+async function getCountry(message, command) {
     let specificCountry = await covid.countries({ country: command })
     if (specificCountry.message)
-        return message.channel.send(localize.translate(specificCountry.message) + "\n" + localize.translate("You can try ISO code or enter `cov help` for commands"));
+        return message.channel.send(localize.translate(specificCountry.message) +
+         "\n" + localize.translate("You can try ISO code or enter `cov help` for commands"));
     return message.channel.send({ embed: messageTemplate(specificCountry) })
 }
-async function getsorted(message) {
+async function getSorted(message) {
     let sortedCaseData = await covid.countries({ sort: "cases" })
     let sortedDeathsData = await covid.countries({ sort: "deaths" })
     let sortedRecoveredData = await covid.countries({ sort: "recovered" })
@@ -264,6 +260,24 @@ async function getState(message, command) {
         return message.channel.send(localize.translate(states.message) + "\n" + localize.translate("You can try ISO code or enter `cov help` for commands"))
     return message.channel.send({ embed: messageTemplate(states) })
 }
+// async function getVaccine(message) {
+    
+//     const embedMsg = {
+//         color: 0x0099ff,
+//         author: {
+//             name: 'COVID -19 by killerbean#8689',
+//             icon_url: 'https://cdn.discordapp.com/avatars/451506381736902656/937b1075d9942fc7d7ef599dfd604230.png?size=256',
+//         },
+//         title: `Coronavirus Vaccine Tracker`,
+//         url:"https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html",
+//         image:{url:"https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html"},
+//         footer: {
+//             text: `${localize.translate("$[1] for commands", "`cov help`")}
+// ${localize.translate("$[1] to invite your server", "`cov invite`")}`
+//         }
+//     };
+//     return await message.channel.send({ embed: embedMsg })
+// }
 async function graph(message, command) {
     let graphData
     if (["all", "global"].includes(command))
@@ -422,5 +436,5 @@ ${localize.translate("$[1] to invite your server", "`cov invite`")}`
     }
     return embedMsg
 }
-
+//template must be updated
 bot.login(process.env.TOKEN)
