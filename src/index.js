@@ -16,6 +16,7 @@ const bot = new Discord.Client({
 
 import { localize, localizeCountry } from "../translations/translate.js"
 import { sequelize, Guilds, addGuild, setLanguage, getLanguage, Validate} from "../db/dbHelper.js"
+import { url } from "inspector";
 
 // import { info } from "console";
 var Filter = require('bad-words')
@@ -132,9 +133,11 @@ bot.on('message', message => {
             else if (command == "sys") {
                 sysInfo(message)
             }
-            // else if (["aşı","vaccine"].includes(command)) {
+             else if (["aşı","vaccine"].includes(command)) {
             //     getVaccine(message)
-            // }
+            url="https://www.theguardian.com/world/ng-interactive/2020/sep/15/covid-vaccine-tracker-when-will-a-coronavirus-vaccine-be-ready"
+            message.channel.send(url)
+        }
             else {
                 let country = localizeCountry(command)
                 getCountry(message, country)
