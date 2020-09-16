@@ -135,7 +135,7 @@ bot.on('message', message => {
             }
              else if (["aşı","vaccine"].includes(command)) {
             //     getVaccine(message)
-            url="https://www.theguardian.com/world/ng-interactive/2020/sep/15/covid-vaccine-tracker-when-will-a-coronavirus-vaccine-be-ready"
+            url="https://biorender.com/covid-vaccine-tracker"
             message.channel.send(url)
         }
             else {
