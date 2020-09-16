@@ -28,6 +28,7 @@
     "Country not found or doesn't have any cases":{"tr":"Ülke bulunamadı veye henüz herhangi bir vaka yok"},
     "$[1] for commands":{"tr":"Komutlar için $[1]"},
     "$[1] to invite your server":{"tr":"Kendi sunucunuza eklemek için $[1]"},
+    "$[1] to change language($[2])":{"tr":"Dili değiştirmek için $[1]($[2])"},
     "shows global COVID-19 Stats":{"tr":"global COVID-19 istatistiklerini gösterir."},
     "shows Top 10 cases,death and recovered stats":{"tr":"İlk 10'daki vaka,ölüm ve iyileşen sayısı"},
     "shows all commands":{"tr":"tüm komutları gösterir"},

@@ -367,8 +367,9 @@ function messageTemplate(data = "", options = { help: false, sort: false, graph:
         files: "",
         image: { url: "" },
         footer: {
-            text: `${localize.translate("$[1] for commands", "`cov help`")}
-${localize.translate("$[1] to invite your server", "`cov invite`")}`
+            text: `${localize.translate("$[1] for commands", "`cov help`")} || ${localize.translate("$[1] to invite your server", "`cov invite`")}
+${"Türkçe için `cov setlan tr`|| `cov setlan en` for English"}`
+
         }
     };
     if (options.help) {
