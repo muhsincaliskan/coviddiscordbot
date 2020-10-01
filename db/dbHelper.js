@@ -97,4 +97,7 @@ async function setLanguage(guildId,newLang) {
 
 }
 
-export {sequelize,Guilds,addGuild,setLanguage,getLanguage,Validate}
+// export {sequelize,Guilds,addGuild,setLanguage,getLanguage,Validate}
+module.exports={
+    sequelize,Guilds,addGuild,setLanguage,getLanguage,Validate
+}

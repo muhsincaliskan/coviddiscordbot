@@ -328,22 +328,17 @@ async function graph(message, command) {
         options: {
             legend: {
                 labels: { usePointStyle: true, fontSize: 25 }
-
             },
             scales: {
                 yAxes: [{
                     ticks: {
                         fontSize: 25,
-
-
                     }
                 }],
                 xAxes: [{
-
                     ticks: {
                         fontSize: 25,
                         beginAtZero: false,
-
                     }
                 }]
             }
@@ -352,9 +347,7 @@ async function graph(message, command) {
 
     const image = await lineRenderer.renderToBuffer(config);
     return message.channel.send({ embed: messageTemplate(graphData.country, { graph: true, Img: image }) })
-
 }
-
 function messageTemplate(data = "", options = { help: false, sort: false, graph: false }) {
     const embedMsg = {
         color: 0x0099ff,
@@ -405,7 +398,6 @@ ${"Türkçe için `cov setlan tr`|| `cov setlan en` for English"}`
             embedMsg.files = [new Discord.MessageAttachment(options.Img, 'graph.png')]
             embedMsg.image.url = "attachment://graph.png"
         }
-
     }
     else {
         embedMsg.fields = [
