@@ -17,7 +17,6 @@
     "covid",
     "corona",
     "virus"
-    
   ],
   "author": "Ahmet Muhsin Çalışkan aka Killerbean",
   "license": "ISC",
@@ -30,7 +29,6 @@
     "chartjs-node-canvas": "^3.0.6",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "esm": "^3.2.25",
     "i18n-iso-countries": "^5.5.0",
     "localize": "^0.4.7",
     "novelcovid": "^3.0.0",

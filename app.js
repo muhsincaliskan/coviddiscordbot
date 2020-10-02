@@ -2,9 +2,7 @@ require("dotenv").config()
 const fs = require('fs');
 const Discord = require("discord.js")
 const { localize,localizeCountry } = require("./translations/translate.js")
-// import { sequelize, Guilds, addGuild, setLanguage, getLanguage, Validate} from "../db/dbHelper.js" 
 const DB = require("./db/dbHelper.js");
-const country = require("./commands/country.js");
 const bot = new Discord.Client({
     presence: {
         status: "online",
@@ -27,8 +25,14 @@ const MIN_INTERVAL = 1000 * 60
 bot.on('ready', async () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     console.log("Bot is running...")
+    // const GuildNames = bot.guilds.cache.map(guild => guild.name);
+    // const GuildsIDs=bot.guilds.cache.map(guild => guild.id);
+    // for (let index = 0; index < bot.guilds.cache.size; index++) {
+    //     DB.addGuild(GuildNames[index],GuildsIDs[index])    
+    // }
+  
     // startTimer()
-    console.log("Timer Started")
+    // console.log("Timer Started")
     try {
         await DB.sequelize.authenticate();
         console.log('Connection has been established successfully.');
@@ -39,12 +43,12 @@ bot.on('ready', async () => {
 })
 bot.on("guildCreate", guild => {
     console.log("Joined a new guild: " + guild.name);
-    DB.Validate(guild.name, guild.id)
+    DB.addGuild(guild.name, guild.id)
     setLocale(guild.id)
 })
 bot.on("channelCreate", (channel) => {
     if (channel.type == "dm") {
-        DB.Validate(channel.recipient.tag, channel.id)
+        DB.addGuild(channel.recipient.tag, channel.id)
         setLocale(channel.id)
     }
 })
