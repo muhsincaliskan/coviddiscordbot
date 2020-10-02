@@ -91,7 +91,7 @@ bot.on('message', message => {
              bot.commands.get("country").execute(message,countryName) 
     } catch (error) {
         console.error(error);
-        message.reply('there was an error trying to execute that command!');
+        message.reply('there was an ERROR trying to execute that command!');
     }
     // executer(message)
 });
@@ -118,9 +118,8 @@ async function setCountryTimer() {
         setTimeout(setCountryTimer, MIN_INTERVAL)
     }
 }
-
 function startTimer() {
-
+//moment ile baştan yazılabilir
     var now = new Date()
     now.setUTCHours((now.getUTCHours() + 3))
     // console.log(now.toUTCString())

@@ -42,7 +42,9 @@ module.exports = {
     description: 'TOP 10',
     aliases:["leaderboard","l"],
 	execute(message, args) {
-		getSorted(message)
+        if (!args.length) {
+           getSorted(message)
+        } 
 	},
 };
 

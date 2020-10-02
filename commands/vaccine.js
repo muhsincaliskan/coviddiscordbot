@@ -5,7 +5,10 @@ module.exports = {
     description: 'Help',
     aliases:["aşı","v"],
 	execute(message, args) {
-        const url="https://biorender.com/covid-vaccine-tracker"
-        message.channel.send(url)
+        if (!args.length) {
+            const url="https://biorender.com/covid-vaccine-tracker"
+            message.channel.send(url)
+        } 
+       
 	},
 };

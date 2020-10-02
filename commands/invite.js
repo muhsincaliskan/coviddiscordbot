@@ -17,6 +17,9 @@ module.exports = {
     description: 'Invite command',
     aliases: ['davet', 'i'],
 	execute(message, args) {
-		message.channel.send({ embed: embedMsg })
+        if (!args.length) {
+            message.channel.send({ embed: embedMsg })
+        } 
+		
 	},
 };

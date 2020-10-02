@@ -42,7 +42,7 @@ module.exports = {
     aliases: ['s', "eyalet"],
     execute(message, args) {
         if (!args.length) {
-            return message.channel.send(`You didn't provide any state name, ${message.author}!`);
+            return message.channel.send(localize.translate("You didn't provide any state name")+`, ${message.author}!`);
         } else {
             const state = args.join(" ")
             getState(message, state)

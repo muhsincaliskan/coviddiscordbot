@@ -38,5 +38,7 @@
     "Statistics for $[1]($[2])":{"tr":"$[1]($[2]) için veriler"},
     "Statistics for $[1]":{"tr":"$[1] için veriler"},
     "shows system info such as Ping,Ram,Memory etc.":{"tr":"ping,ram,bellek vs. gibi sistem bilgilerini gösterir."},
-    "change language TR/EN. Default language is English":{"tr":"Türkçe veya İngilizce dil seçimi yapar. Orjinal dil İngilizcedir!"}
+    "change language TR/EN. Default language is English":{"tr":"Türkçe veya İngilizce dil seçimi yapar. Orjinal dil İngilizcedir!"},
+    "You didn't provide any country name": {"tr":"Her hangi bir ülke ismi belirtmediniz"},
+    "You didn't provide any state name": {"tr":"Her hangi bir eyalet ismi belirtmediniz"}
 }

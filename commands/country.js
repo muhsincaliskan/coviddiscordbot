@@ -1,4 +1,5 @@
-const covid = require('novelcovid')
+const covid = require('novelcovid');
+const translate = require('../translations/translate.js');
 const { localize, localizeCountry } = require("../translations/translate.js")
 async function getCountry(message="", command) {
     let specificCountry = await covid.countries({ country: command })
@@ -39,7 +40,7 @@ module.exports = {
     aliases: ['c', "ülke"],
     execute(message, args) {
         if (!args.length) {
-            return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+            return message.channel.send(localize.translate("You didn't provide any country name")+`, ${message.author}!`);
         } else {
             let country = localizeCountry(args)
             getCountry(message, country)

@@ -115,7 +115,7 @@ module.exports = {
     aliases: ['g', "grafik"],
     execute(message, args) {
         if (!args.length) {
-            return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+            return message.channel.send(localize.translate("You didn't provide any country name")+`, ${message.author}!`);
         } else {
             graph(message, localizeCountry(args))
         }

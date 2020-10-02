@@ -1,5 +1,7 @@
 const {localize}=require("../translations/translate.js")
 const Discord = require("discord.js")
+const moment = require("moment");
+
 async function sys(message){
 
 const { client } = message
@@ -19,7 +21,7 @@ const used = process.memoryUsage().rss / 1024 / 1024;
             { name: "Node.js", value: process.version, inline: true },
             // { name: "CPU", value: process.cpuUsage().system, inline: true },
             { name: "Memory", value: Math.round(used * 100) / 100 + " MB", inline: true },
-             { name: "Uptime", value: client.uptime, inline: true },
+             { name: "Uptime", value:`${moment(+Date.now()-client.uptime).fromNow({ withoutSuffix: true })}`, inline: true },
         ],
         footer: {
             text: `${localize.translate("$[1] for commands", "`cov help`")}
@@ -31,8 +33,10 @@ ${localize.translate("$[1] to invite your server", "`cov invite`")}`
 module.exports = {
 	name: 'sys',
     description: 'System Info',
-    aliases:["system","s","sistem"],
+    aliases:["system","sistem"],
 	execute(message, args) {
-		sys(message)
+        if (!args.length) {
+            sys(message)  
+        } 
 	},
 };
