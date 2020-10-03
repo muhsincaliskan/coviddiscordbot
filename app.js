@@ -54,6 +54,7 @@ bot.on("channelCreate", (channel) => {
 })
 bot.on('message', message => {
     DB.Guilds.sync()
+    message.content=message.content.toLowerCase()
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     let ID
     if (message.guild != null){
