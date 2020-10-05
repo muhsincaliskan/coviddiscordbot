@@ -105,9 +105,6 @@ async function setLocale(id) {
 async function setCountryTimer() {
     var channel = bot.channels.resolve('')
     const data = await covid.countries({ country: "tr" })
-    // var updated=new Date()
-    // updated=updated.getHours()+" : "+updated.getMinutes()
-    // console.log(updated)
     if (data.todayCases > 0) {
         bot.commands.get(commandName).execute()
         channel.send({ embed: messageTemplate(data) });
