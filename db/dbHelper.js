@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const connection_url="postgres://xjxvtofeynysqs:50093c33a672403fbe38530fbfafd55dd5d2832681bca448ab9fc0c1f228ae2c@ec2-54-211-210-149.compute-1.amazonaws.com:5432/dai6pbfsfnekc5"
+const connection_url=""
 const sequelize = new Sequelize(connection_url, {
     dialect:  'postgres',
     protocol: 'postgres',
@@ -40,13 +40,7 @@ const Guilds = sequelize.define('guilds', {
         // unique: true
     }
 });
-// async function Validate(Name,ID){
-//    var guildId=ID
-//    var guildName=Name
-//     // if(checkID(guildId)==false)
-//     addGuild(guildName,guildId,default_language)
-//     return    
-// }
+
 async function addGuild(guildName, guildId, lang=default_language) {
     try {
         // equivalent to: INSERT INTO tags (name, description, username) values (?, ?, ?);
@@ -65,15 +59,7 @@ async function addGuild(guildName, guildId, lang=default_language) {
        return console.log('Something went wrong with adding a Guild or Channel.');
     }
 }
-// async function checkID(guildId) {
-//     const guild = await Guilds.findOne({ where: { guild_id: guildId } });
-// if (guild) {
-//     console.log("Guild or channel exists in database")
-//     return true
-// }
-// console.log("Guild or channel does not exists in database")
-// return false
-// }
+
 async function getLanguage(guildId) {
 // equivalent to: SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
 const guild = await Guilds.findOne({ where: { guild_id: guildId } });
@@ -98,7 +84,6 @@ async function setLanguage(guildId,newLang) {
 
 }
 
-// export {sequelize,Guilds,addGuild,setLanguage,getLanguage,Validate}
 module.exports={
     sequelize,Guilds,addGuild,setLanguage,getLanguage
 }

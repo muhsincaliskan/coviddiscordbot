@@ -103,7 +103,7 @@ async function setLocale(id) {
 }
 
 async function setCountryTimer() {
-    var channel = bot.channels.resolve('671048646774489131')
+    var channel = bot.channels.resolve('')
     const data = await covid.countries({ country: "tr" })
     // var updated=new Date()
     // updated=updated.getHours()+" : "+updated.getMinutes()

@@ -4,7 +4,7 @@ module.exports = {
     aliases:["res"],
 	execute(message, args) {
       
-        if (message.author.id=="451506381736902656") {
+        if (message.author.id=="") {
             // message.channel.send(url)
         }
       
