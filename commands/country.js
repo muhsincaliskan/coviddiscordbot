@@ -1,5 +1,4 @@
 const covid = require('novelcovid');
-const translate = require('../translations/translate.js');
 const { localize, localizeCountry } = require("../translations/translate.js")
 async function getCountry(message="", command) {
     let specificCountry = await covid.countries({ country: command })
